@@ -22,6 +22,7 @@ namespace NapredneBazeProjekat.Controllers
         {
             _logger = logger;
         }
+        //proba
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()

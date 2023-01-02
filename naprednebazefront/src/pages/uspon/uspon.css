@@ -1,0 +1,29 @@
+.uspon-main-div
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.uspon
+{
+    display: flex;
+    flex-direction: row-reverse;
+
+}
+.uspon-info
+{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-left: 40px;
+
+}
+.uspon-image
+{
+    margin-left: 20px;
+}
+.usput-about
+{
+    width: 200px;
+    text-overflow:ellipsis;
+}

@@ -27,3 +27,41 @@ C:\Users\NikolaStoÅ¡iÄ‡\Desktop\NapredneBazeProjekat\obj\Debug\net5.0\Napre
 C:\Users\NikolaStoÅ¡iÄ‡\Desktop\NapredneBazeProjekat\obj\Debug\net5.0\ref\NapredneBazeProjekat.dll
 C:\Users\NikolaStoÅ¡iÄ‡\Desktop\NapredneBazeProjekat\obj\Debug\net5.0\NapredneBazeProjekat.pdb
 C:\Users\NikolaStoÅ¡iÄ‡\Desktop\NapredneBazeProjekat\obj\Debug\net5.0\NapredneBazeProjekat.genruntimeconfig.cache
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\appsettings.Development.json
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\appsettings.json
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\NapredneBazeProjekat.StaticWebAssets.xml
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\NapredneBazeProjekat.exe
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\NapredneBazeProjekat.deps.json
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\NapredneBazeProjekat.runtimeconfig.json
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\NapredneBazeProjekat.runtimeconfig.dev.json
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\NapredneBazeProjekat.dll
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\NapredneBazeProjekat.pdb
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\Microsoft.OpenApi.dll
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\Neo4j.Driver.dll
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\Neo4jClient.dll
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\Newtonsoft.Json.dll
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\NapredneBazeProjekat.csproj.AssemblyReference.cache
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\NapredneBazeProjekat.GeneratedMSBuildEditorConfig.editorconfig
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\NapredneBazeProjekat.AssemblyInfoInputs.cache
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\NapredneBazeProjekat.AssemblyInfo.cs
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\NapredneBazeProjekat.csproj.CoreCompileInputs.cache
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\NapredneBazeProjekat.MvcApplicationPartsAssemblyInfo.cs
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\NapredneBazeProjekat.MvcApplicationPartsAssemblyInfo.cache
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\scopedcss\bundle\NapredneBazeProjekat.styles.css
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\staticwebassets\NapredneBazeProjekat.StaticWebAssets.Manifest.cache
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\staticwebassets\NapredneBazeProjekat.StaticWebAssets.Pack.cache
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\staticwebassets\msbuild.NapredneBazeProjekat.Microsoft.AspNetCore.StaticWebAssets.props
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\staticwebassets\msbuild.build.NapredneBazeProjekat.props
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\staticwebassets\msbuild.buildMultiTargeting.NapredneBazeProjekat.props
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\staticwebassets\msbuild.buildTransitive.NapredneBazeProjekat.props
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\NapredneBazeProjekat.RazorTargetAssemblyInfo.cache
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\NapredneBazeProjekat.csproj.CopyComplete
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\NapredneBazeProjekat.dll
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\refint\NapredneBazeProjekat.dll
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\NapredneBazeProjekat.pdb
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\NapredneBazeProjekat.genruntimeconfig.cache
+D:\IV godina\VII semestar\Napredne baze\NapredneBazePodataka\back\obj\Debug\net5.0\ref\NapredneBazeProjekat.dll

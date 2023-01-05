@@ -4,8 +4,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:24706",
-      "sslPort": 44357
+      "applicationUrl": "http://localhost:38807",
+      "sslPort": 44340
     }
   },
   "profiles": {
@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "NapredneBazeProjekat": {
+    "naprednebazeback": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

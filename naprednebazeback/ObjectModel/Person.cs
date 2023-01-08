@@ -1,4 +1,4 @@
-namespace back.ObjectModel
+namespace naprednebazeback.ObjectModel
 {
     public class Person
     {

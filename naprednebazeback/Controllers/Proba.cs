@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using back.ObjectModel;
+using naprednebazeback.ObjectModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Neo4jClient;
 
-namespace back.Controllers
+namespace naprednebazeback.Controllers
 {
     [ApiController]
     [Route("[controller]")]

@@ -1,15 +1,16 @@
 using System.Collections.Generic;
+using System;
 
 namespace back.ObjectModel
 {
     public class Mountain
     {
-        public virtual long Id { get; set; }
-        public virtual string Name { get; set; }
-        public virtual float Surface {get; set; }
-        public virtual MountainTop HighestPoint { get; set;}
-        public virtual List<MountainTop> MountainTops { get; set;}
-        public virtual Region Region { get; set;}
+        public virtual Guid Id { get; set; }
+        public virtual string name { get; set; }
+        public virtual float surface {get; set; }
+        public virtual MountainTop highestPoint { get; set;}
+        public virtual List<MountainTop> mountainTops { get; set;}
+        public virtual Region region { get; set;}
 
         public Mountain() { } 
 

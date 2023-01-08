@@ -1,11 +1,15 @@
+using System;
+using System.Collections.Generic;
+
 namespace back.ObjectModel
 {
     public class MountainTop
     {
-        public virtual long Id { get; set;}
-        public virtual string Name { get; set;}
-        public virtual int Height { get; set; }
-        public virtual Mountain MountainName { get; set; }
+        public virtual Guid Id { get; set; }
+        public virtual string name { get; set;}
+        public virtual int height { get; set; }
+        public virtual Mountain mountainName { get; set; }
+        public virtual List<Event> events { get; set; }  
         public MountainTop() {}
     }
 }

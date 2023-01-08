@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Neo4jClient;
 
-namespace back.Controller
+namespace back.Controllers
 {
     [ApiController]
     [Route("[controller]")]

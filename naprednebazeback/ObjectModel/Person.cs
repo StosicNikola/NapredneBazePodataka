@@ -1,11 +1,14 @@
+using System;
+
 namespace naprednebazeback.ObjectModel
 {
     public class Person
     {
-        public virtual long Id { get; protected set; }
-        public virtual string name { get; set;}
-        public virtual string surname {get; set;}     
-        public virtual int sge {get; set;}
+        public virtual Guid Id { get; protected set; }
+        public virtual string name { get; set; }
+        public virtual string surname { get; set; }     
+        public virtual int age { get; set; }
+        public virtual string role { get; set; }
 
         public Person(){ }
     }

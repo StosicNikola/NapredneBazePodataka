@@ -5,7 +5,7 @@ namespace naprednebazeback.DTOs
 {
     public class MountairRunnerView
     {
-        public long PersonId {get; set;}
+        public Guid PersonId {get; set;}
         public string Name {get; set;}
         public int Score {get; set;}
         public DateTime TimeStampRunner {get; set;}

@@ -114,7 +114,7 @@ namespace naprednebazeback.Modules
             {
                 obj = await _graphClient.Cypher.Match("(m:Mountain), (mt: MountainTop)")
                                                 .Where((Mountain m, MountainTop mt) => m.Id == mountainId && mt.Id == mountainTopId)
-                                                .Create("(mt)-[r:isLocated]->(m)")
+                                                .Create("(mt)-[r:isLocatedOn]->(m)")
                                                 .Return(m => m.As<MountainTop>())
                                                 .ResultsAsync;
             }

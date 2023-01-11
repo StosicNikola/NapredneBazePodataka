@@ -4,18 +4,21 @@ import {useParams } from "react-router-dom";
 import Header from '../../components/header/header';
 import './uspon.css'
 import Lobby from '../../components/Lobby';
-import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { HubConnectionBuilder, LogLevel , HttpTransportType} from '@microsoft/signalr';
 import { useState } from 'react';
 
 function Uspon()
 {
     const {handle}=useParams();
     const [connection,setConnection] = useState();
-    const [messages,setMessages] = useState();
+    const [messages,setMessages] = useState([]);
     const joinRoom = async (user,room) =>{
         try{
             const connection = new HubConnectionBuilder()
-            .withUrl("http://localhost:5000/chat")
+            .withUrl("https://localhost:5001/chat",{
+                skipNegotiation: true,
+                transport: HttpTransportType.WebSockets
+            })
             .configureLogging(LogLevel.Information)
             .build();
 

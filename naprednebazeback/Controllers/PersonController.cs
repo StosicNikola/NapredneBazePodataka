@@ -68,36 +68,36 @@ namespace naprednebazeback.Controllers
         {
            return Ok(_module.ReturnRefereeByName(name));
         }
-        [HttpGet]
+      /*  [HttpGet]
         [Route("referee/id/{id}")]
         public async Task<ActionResult> ReturnRefereeById(string id)
         {
            return Ok(_module.ReturnRefereeById(new Guid(id)));
-        }
+        }*/
         [HttpGet]
         [Route("mountaineer/name/{name}")]
         public async Task<ActionResult> ReturnMounatineerByName(string name)
         {
            return Ok(_module.ReturnMounatineerByName(name));
         }
-        [HttpGet]
+      /*  [HttpGet]
         [Route("mountaineer/id/{id}")]
         public async Task<ActionResult> ReturnMounatineerById(string id)
         {
            return Ok(_module.ReturnMounatineerById(new Guid(id)));
-        }
+        }*/
         [HttpGet]
         [Route("hikingguide/name/{name}")]
         public async Task<ActionResult> ReturnHikingGuideByName(string name)
         {
            return Ok(_module.ReturnHikingGuideByName(name));
         }
-        [HttpGet]
+      /*  [HttpGet]
         [Route("hikingguide/id/{id}")]
         public async Task<ActionResult> ReturnHikingGuideById(string id)
         {
            return Ok(_module.ReturnHikingGuideById(new Guid(id)));
-        }
+        }*/
         [HttpPut]
         [Route("referee")]
         public async Task<ActionResult> UpdateReferee([FromBody]Referee referee)
@@ -116,7 +116,7 @@ namespace naprednebazeback.Controllers
         {
             return Ok(_module.UpdateHikingGuide(hikingGuide));
         }
-        [HttpDelete]
+    /*    [HttpDelete]
         [Route("referee/{id}")] 
         public async Task<ActionResult> DeleteReferee(string id)
         {
@@ -164,7 +164,7 @@ namespace naprednebazeback.Controllers
         {
             _module.AddMountaineerClimbs(new Guid(hikeId), new Guid(mountaineerId));
             return Ok();
-        }
+        }*/
 
 
 

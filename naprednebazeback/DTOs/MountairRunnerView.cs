@@ -5,7 +5,7 @@ namespace naprednebazeback.DTOs
 {
     public class MountainRunnerView
     {
-        public Guid PersonId {get; set;}
+        public long PersonId {get; set;}
         public string Name {get; set;}
         public double Score {get; set;}
         public DateTime TimeStampRunner {get; set;}

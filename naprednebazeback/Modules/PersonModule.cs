@@ -139,7 +139,7 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }
-        public async IAsyncEnumerable<object> ReturnRefereeById(Guid id)
+    /*    public async IAsyncEnumerable<object> ReturnRefereeById(Guid id)
         {
             var obj = new object();
             try
@@ -150,8 +150,7 @@ namespace naprednebazeback.Modules
             {
                 _logger.LogError("Error returning referee! " + e.Message);
             }
-            yield return obj;
-        }
+            yield return obj;*/
 
         public async IAsyncEnumerable<object> ReturnMounatineerByName(string name)
         {
@@ -166,7 +165,7 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }
-        public async IAsyncEnumerable<object> ReturnMounatineerById(Guid id)
+    /*    public async IAsyncEnumerable<object> ReturnMounatineerById(Guid id)
         {
             var obj = new object();
             try
@@ -178,7 +177,7 @@ namespace naprednebazeback.Modules
                 _logger.LogError("Error returning Mountaineer! " + e.Message);
             }
             yield return obj;
-        }
+        }*/
         public async IAsyncEnumerable<object> ReturnHikingGuideByName(string name)
         {
             var obj = new object();
@@ -192,7 +191,7 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }
-        public async IAsyncEnumerable<object> ReturnHikingGuideById(Guid id)
+      /*  public async IAsyncEnumerable<object> ReturnHikingGuideById(Guid id)
         {
             var obj = new object();
             try
@@ -204,7 +203,7 @@ namespace naprednebazeback.Modules
                 _logger.LogError("Error returning Hiking Guide! " + e.Message);
             }
             yield return obj;
-        }
+        }*/
         public async IAsyncEnumerable<object> UpdateReferee(Referee referee)
         {
             var obj = new object();
@@ -264,7 +263,7 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }
-        public async void DeleteReferee(Guid id)
+     /*   public async void DeleteReferee(Guid id)
         {
             try
             {
@@ -276,9 +275,9 @@ namespace naprednebazeback.Modules
             {
                 _logger.LogError("Error deleting referee! " + e.Message);
             }
-        }
+        }*/
 
-        public async void DeleteHikingGuide(Guid id)
+     /*   public async void DeleteHikingGuide(Guid id)
         {
             try
             {
@@ -290,8 +289,8 @@ namespace naprednebazeback.Modules
             {
                 _logger.LogError("Error deleting Hiking Guide! " + e.Message);
             }
-        }
-        public async void DeleteMountaineer(Guid id)
+        }*/
+     /*   public async void DeleteMountaineer(Guid id)
         {
             try
             {
@@ -303,9 +302,9 @@ namespace naprednebazeback.Modules
             {
                 _logger.LogError("Error deleting Mountaineer! " + e.Message);
             }
-        }
+        }*/
 
-        public async void AddHike(Guid hikeId, Guid hikeGuideId)
+     /*   public async void AddHike(Guid hikeId, Guid hikeGuideId)
         {
             try
             {
@@ -318,9 +317,9 @@ namespace naprednebazeback.Modules
             {
                 _logger.LogError("Error adding hike! " + e.Message);
             }
-        }
+        }*/
 
-        public async void AddRace(Guid raceId, Guid refereeId)
+       /* public async void AddRace(Guid raceId, Guid refereeId)
         {
             try
             {
@@ -333,9 +332,9 @@ namespace naprednebazeback.Modules
             {
                 _logger.LogError("Error adding race! " + e.Message);
             }
-        }
+        }*/
 
-        public async void AddMountaineerCompete(Guid raceId, Guid mountaineerId)
+       /* public async void AddMountaineerCompete(Guid raceId, Guid mountaineerId)
         {
             try
             {
@@ -348,9 +347,9 @@ namespace naprednebazeback.Modules
             {
                 _logger.LogError("Error adding race! " + e.Message);
             }
-        }
+        }*/
 
-        public async void AddMountaineerClimbs(Guid hikeId, Guid mountaineerId)
+       /* public async void AddMountaineerClimbs(Guid hikeId, Guid mountaineerId)
         {
             try
             {
@@ -363,7 +362,7 @@ namespace naprednebazeback.Modules
             {
                 _logger.LogError("Error adding race! " + e.Message);
             }
-        }
+        }*/
         
 
 

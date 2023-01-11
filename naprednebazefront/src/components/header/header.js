@@ -5,7 +5,7 @@ import './header.css'
 function Header() {
     return (<header className='header'>
         <Link to='/'>
-            <h1 className='header-logo'>Mouten running</h1>
+            <h1 className='header-logo'>Mountain running</h1>
         </Link>
         <div className='header-div-buttons'>
         <Link to="/signin">

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Neo4jClient;
+using naprednebazeback.Hubs;
 
 namespace naprednebazeback
 {
@@ -46,6 +47,32 @@ namespace naprednebazeback
                 builder.AddConsole();
                 builder.AddDebug();
             });
+
+            services.AddSignalR();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CORS", builder =>
+                {
+                    builder.WithOrigins(new string[]
+                    {
+                        "https://localhost:8080",
+                        "https://localhost:8080",
+                        "http://127.0.0.1:8080",
+                        "http://127.0.0.1:8080",
+                        "https://localhost:5001",
+                        "http://127.0.0.1:5500",
+                        "https://localhost:5001",
+                        "http://127.0.0.1:5001",
+                        "https://localhost:3000",
+                        "http://localhost:3000",
+                        "https://127.0.0.1:3000",
+                        "http://127.0.0.1:3000"
+                    })
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,12 +88,15 @@ namespace naprednebazeback
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            
+            app.UseCors();
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                //endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }

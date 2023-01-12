@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Neo4jClient;
 using naprednebazeback.Hubs;
+using naprednebazeback.RedisDataLayer;
 
 namespace naprednebazeback
 {
@@ -35,6 +36,8 @@ namespace naprednebazeback
             neo4JClient.ConnectAsync();
             services.AddSingleton<IGraphClient>(neo4JClient);
 
+            services.AddSingleton<IDictionary<string, UserConnection>>(opts => new Dictionary<string,UserConnection>());
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -48,32 +51,8 @@ namespace naprednebazeback
                 builder.AddDebug();
             });
 
-             services.AddSignalR();
-            // services.AddCors(options =>
-            // {
-            //     options.AddPolicy("CORS", builder =>
-            //     {
-            //         builder.WithOrigins(new string[]
-            //         {
-            //             "https://localhost:8080",
-            //             "https://localhost:8080",
-            //             "http://127.0.0.1:8080",
-            //             "http://127.0.0.1:8080",
-            //             "https://localhost:5001",
-            //             "http://127.0.0.1:5500",
-            //             "https://localhost:5001",
-            //             "http://127.0.0.1:5001",
-            //             "https://localhost:3000",
-            //             "http://localhost:3000",
-            //             "http://localhost:3000",
-            //             "https://127.0.0.1:3000",
-            //             "http://127.0.0.1:3000"
-            //         })
-            //         .AllowAnyHeader()
-            //         .AllowAnyMethod()
-            //         .AllowCredentials();
-            //     });
-            // });
+            services.AddSignalR();
+          
             services.AddCors( options=>{
                 options.AddDefaultPolicy(builder=>
                 {
@@ -83,12 +62,6 @@ namespace naprednebazeback
                         .AllowCredentials();
                 });
             });
-        //      services.UseCors(x => x
-        //    .AllowAnyMethod()
-        //    .AllowAnyHeader()
-        //    .SetIsOriginAllowed(origin => true)
-        //    .AllowCredentials());
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -105,12 +78,7 @@ namespace naprednebazeback
 
             app.UseRouting();
             
-             app.UseCors(/*"CORS"*/);
-        //       app.UseCors(x => x
-        //    .AllowAnyMethod()
-        //    .AllowAnyHeader()
-        //    .SetIsOriginAllowed(origin => true)
-        //    .AllowCredentials());
+             app.UseCors();
 
             app.UseAuthorization();
 

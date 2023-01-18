@@ -5,7 +5,7 @@ namespace naprednebazeback.ObjectModel
 {
     public class Event
     {
-        public virtual Guid Id { get; set;}
+        public virtual long Id { get; set;}
         public virtual string name { get; set; }
         public virtual DateTime date { get; set; }
         public virtual int difficulty { get; set; }

@@ -21,15 +21,21 @@ namespace naprednebazeback.Controllers
         }
         [HttpGet]
         [Route("id/{id}")]
-        public async Task<ActionResult> ReturnRegionById(string id)
+        public async Task<ActionResult> ReturnRegionById(long id)
         {
-            return Ok(_module.ReturnRegionById(new Guid(id)));
+            return Ok(_module.ReturnRegionById(id));
         }
         [HttpGet]
         [Route("name/{name}")]
         public async Task<ActionResult> ReturnRegionByName(string name)
         {
             return Ok(_module.ReturnRegionByName(name));
+        }
+        [HttpGet]
+        [Route("")]
+        public async Task<ActionResult> ReturnAllRegions()
+        {
+            return Ok(_module.ReturnAllRegions());
         }
         [HttpPost]
         [Route("{name}")]
@@ -45,9 +51,9 @@ namespace naprednebazeback.Controllers
         }
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ActionResult> DeleteRegion(string id)
+        public async Task<ActionResult> DeleteRegion(long id)
         {
-            return Ok(_module.DeleteRegion(new Guid(id)));
+            return Ok(_module.DeleteRegion(id));
         }
         
     }

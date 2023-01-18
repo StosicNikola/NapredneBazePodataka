@@ -5,7 +5,7 @@ namespace naprednebazeback.ObjectModel
 {
     public class MountainTop
     {
-        public virtual Guid Id { get; set; }
+        public virtual long Id { get; set; }
         public virtual string name { get; set;}
         public virtual int height { get; set; }
         public virtual Mountain mountainName { get; set; }

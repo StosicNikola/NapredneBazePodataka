@@ -33,10 +33,22 @@ namespace naprednebazeback.Controllers
             return Ok(_module.CreateRaceEvent(name, date, difficulty));
         }
         [HttpGet]
-        [Route("hike/id/{id}")]
-        public async Task<ActionResult> ReturnHikeById(string id)
+        [Route("")]
+        public async Task<ActionResult> ReturnAllHikeEvents()
         {
-            return Ok(_module.ReturnHikeEventById(new Guid(id)));
+            return Ok(_module.ReturnAllHikeEvents());
+        }
+        [HttpGet]
+        [Route("")]
+        public async Task<ActionResult> ReturnAllRaceEvents()
+        {
+            return Ok(_module.ReturnAllRaceEvents());
+        }
+        [HttpGet]
+        [Route("hike/id/{id}")]
+        public async Task<ActionResult> ReturnHikeById(long id)
+        {
+            return Ok(_module.ReturnHikeEventById(id));
         }
         [HttpGet]
         [Route("hike/name/{name}")]
@@ -46,9 +58,9 @@ namespace naprednebazeback.Controllers
         }
         [HttpGet]
         [Route("race/id/{id}")]
-        public async Task<ActionResult> ReturnRaceById(string id)
+        public async Task<ActionResult> ReturnRaceById(long id)
         {
-            return Ok(_module.ReturnRaceEventById(new Guid(id)));
+            return Ok(_module.ReturnRaceEventById(id));
         }
         [HttpGet]
         [Route("race/name/{name}")]
@@ -70,27 +82,27 @@ namespace naprednebazeback.Controllers
         }
         [HttpDelete]
         [Route("hike/{id}")]
-        public async Task<ActionResult> DeleteHike(string id)
+        public async Task<ActionResult> DeleteHike(long id)
         {
-            return Ok(_module.DeleteHike(new Guid(id)));
+            return Ok(_module.DeleteHike(id));
         }
         [HttpDelete]
         [Route("race/{id}")]
-        public async Task<ActionResult> DeleteRace(string id)
+        public async Task<ActionResult> DeleteRace(long id)
         {
-            return Ok(_module.DeleteRace(new Guid(id)));
+            return Ok(_module.DeleteRace(id));
         }
         [HttpPost]
         [Route("hike/{hikeId}/mountaintop/{mountainTopId}")]
-        public async Task<ActionResult> AddMountainTopForHike(string hikeId,string mountainTopId)
+        public async Task<ActionResult> AddMountainTopForHike(long hikeId,long mountainTopId)
         {
-            return Ok(_module.AddMountainTopForHike(new Guid(mountainTopId), new Guid(hikeId)));
+            return Ok(_module.AddMountainTopForHike(mountainTopId, hikeId));
         }
         [HttpPost]
         [Route("race/{raceId}/mountaintop/{mountainTopId}")]
-        public async Task<ActionResult> AddMountainTopForRace(string raceId,string mountainTopId)
+        public async Task<ActionResult> AddMountainTopForRace(long raceId,long mountainTopId)
         {
-            return Ok(_module.AddMountainTopForRace(new Guid(mountainTopId), new Guid(raceId)));
+            return Ok(_module.AddMountainTopForRace(mountainTopId, raceId));
         }
 
         

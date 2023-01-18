@@ -25,11 +25,13 @@ namespace naprednebazeback.Modules
             var obj = new object();
             try
             {
-                Guid id = Guid.NewGuid();
                 Dictionary<string, object> dictParam = new Dictionary<string, object>();
-                dictParam.Add("Id", id);
                 dictParam.Add("Name", name);
-                obj = await _graphClient.Cypher.Create("(r:Region{Id:$Id, name:$Name})").WithParams(dictParam).Return(r=>r.As<Region>()).ResultsAsync;
+                obj = await _graphClient.Cypher.Create("(r:Region{Id:$Id, name:$Name})")
+                                                .WithParam("Name",name)
+                                                .With("r{.*, Id:id{r}} AS region")
+                                                .Return(region=>region.As<Region>())
+                                                .ResultsAsync;
             }
             catch(Exception e)
             {
@@ -37,12 +39,25 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         } 
+        public async IAsyncEnumerable<object> ReturnAllRegions()
+        {
+            var obj = await _graphClient.Cypher.Match("(r:Region)")
+                                                .With("r{.*, Id:id{r}} AS region")
+                                                .Return(region=>region.As<Region>())
+                                                .ResultsAsync;
+
+            yield return obj;
+        }
         public async IAsyncEnumerable<object> ReturnRegionByName(string name)
         {
             var obj = new object();
             try
             {
-                obj = await _graphClient.Cypher.Match("(r:Region)").Where((Region r)=> r.name == name).Return(r=>r.As<Region>()).ResultsAsync;
+                obj = await _graphClient.Cypher.Match("(r:Region)")
+                                                .Where((Region r)=> r.name == name)
+                                                .With("r{.*, Id:id{r}} AS region")
+                                                .Return(region=>region.As<Region>())
+                                                .ResultsAsync;
             }
             catch(Exception e)
             {
@@ -51,12 +66,17 @@ namespace naprednebazeback.Modules
             yield return obj;
 
         }
-        public async IAsyncEnumerable<object> ReturnRegionById(Guid id)
+        public async IAsyncEnumerable<object> ReturnRegionById(long id)
         {
             var obj = new object();
             try
             { 
-                obj = await _graphClient.Cypher.Match("(r:Region)").Where((Region r)=>r.Id == id).Return(r=>r.As<Region>()).ResultsAsync;
+                obj = await _graphClient.Cypher.Match("(r:Region)")
+                                                .Where("id(r)=$Id")
+                                                .WithParam("Id",id)
+                                                .With("r{.*, Id:id{r}} AS region")
+                                                .Return(region=>region.As<Region>())
+                                                .ResultsAsync;
             }
             catch(Exception e)
             {
@@ -69,7 +89,17 @@ namespace naprednebazeback.Modules
             var obj = new object();
             try
             {
-                obj = await _graphClient.Cypher.Match("(r:Region)").Where((Region r)=> r.Id == region.Id).Set("r=$region").WithParam("region", region).Return(r=>r.As<Region>()).ResultsAsync;
+                obj = await _graphClient.Cypher.Match("(r:Region)")
+                                                .Where("id(r)=$Id")
+                                                .WithParam("Id",region.Id)
+                                                .Set("r=$region")
+                                                .WithParam("region", new
+                                                {
+                                                    region.name
+                                                })
+                                                .With("r{.*, Id:id{r}} AS region")
+                                                .Return(region=>region.As<Region>())
+                                                .ResultsAsync;
             }
             catch(Exception e)
             {
@@ -77,12 +107,18 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }   
-        public async IAsyncEnumerable<object> DeleteRegion(Guid id)
+        public async IAsyncEnumerable<object> DeleteRegion(long id)
         {
             var obj = new object();
             try
             {
-                obj = await _graphClient.Cypher.Match("(r:Region)").Where((Region r)=> r.Id==id).DetachDelete("r").Return(r=>r.As<Region>()).ResultsAsync;
+                obj = await _graphClient.Cypher.Match("(r:Region)")
+                                                .Where("id(r)=$Id")
+                                                .WithParam("Id",id)
+                                                .DetachDelete("r")
+                                                .With("r{.*, Id:id{r}} AS region")
+                                                .Return(region=>region.As<Region>())
+                                                .ResultsAsync;
             }
             catch(Exception e)
             {

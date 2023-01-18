@@ -34,28 +34,40 @@ namespace naprednebazeback.Controllers
             return Ok( _modules.CreateMountain(name,surface));
         }
         [HttpGet]
-        [Route("{name}")]
+        [Route("")]
+        public async Task<ActionResult> ReturnAllMountains()
+        {
+            return Ok(_modules.ReturnAllMountains());
+        }
+        [HttpGet]
+        [Route("id/{id}")]
+        public async Task<ActionResult> ReturnMountainById(long id)
+        {
+            return Ok(_modules.ReturnMountainById(id));
+        }
+        [HttpGet]
+        [Route("name/{name}")]
         public async Task<ActionResult> ReturnMountain(string name)
         {
-            return Ok( _modules.ReturnMountain(name));
+            return Ok( _modules.ReturnMountainByName(name));
         }
         [HttpPut]
-        [Route("{id}")]
-        public async Task<ActionResult> UpdateMountain(string id,[FromBody]Mountain m)
+        [Route("")]
+        public async Task<ActionResult> UpdateMountain([FromBody]Mountain m)
         {
-            return Ok(_modules.UpdateMountain(new Guid(id),m));
+            return Ok(_modules.UpdateMountain(m));
         }
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ActionResult> DeleteMountain(string id)
+        public async Task<ActionResult> DeleteMountain(long id)
         {
-            return Ok(_modules.DeleteMountain(new Guid(id)));
+            return Ok(_modules.DeleteMountain(id));
         }
         [HttpPost]
         [Route("{mountainId}/region/{regionId}")]
-        public async Task<ActionResult> CreateRelationship(string mountainId, string regionId)
+        public async Task<ActionResult> CreateRelationship(long mountainId, long regionId)
         {
-            return Ok(_modules.AddRegion(new Guid(mountainId),new Guid(regionId)));
+            return Ok(_modules.AddRegion(mountainId,regionId));
         }
 
     }

@@ -27,15 +27,14 @@ namespace back.Modules
             var obj = new object();
             try
             {
-                Guid id = Guid.NewGuid();
                 Dictionary<string, object> dictParam = new Dictionary<string, object>();
-                dictParam.Add("Id", id);
                 dictParam.Add("Name", name);
                 dictParam.Add("Surface", float.Parse(surface, CultureInfo.InvariantCulture.NumberFormat));
-                
-                obj =  await _graphClient.Cypher.Create("(n:Mountain{Id: $Id, name: $Name, surface: $Surface})")
+                obj =  await _graphClient.Cypher.Create("(n:Mountain{name: $Name, surface: $Surface})")
                                                 .WithParams(dictParam)
-                                                .Return(n => n.As<Mountain>()).ResultsAsync;
+                                                .With("m{.*, Id:id(m)} AS mountain")
+                                                .Return(mountain => mountain.As<Mountain>())
+                                                .ResultsAsync;
                 _logger.LogInformation("Mountain created successfully");
             }
             catch (Exception e)
@@ -44,14 +43,34 @@ namespace back.Modules
             }
             yield return obj;
         }
-        public async IAsyncEnumerable<object> ReturnMountain(string name)
+        public async IAsyncEnumerable<object> ReturnAllMountains()
+        {
+            var obj = await _graphClient.Cypher.Match("m:Mountain")
+                                                .With("m{.*, Id:id(m)} AS mountain")
+                                                .Return(mountain => mountain.As<Mountain>())
+                                                .ResultsAsync;
+            yield return obj;
+        }
+        public async IAsyncEnumerable<object> ReturnMountainById(long id)
+        {
+            var obj = await _graphClient.Cypher.Match("(m:Mountain)")
+                                                .Where("id(m)= $Id")
+                                                .WithParam("Id",id)
+                                                .With("m{.*, Id:id(m)} AS mountain")
+                                                .Return(mountain => mountain.As<Mountain>())
+                                                .ResultsAsync;
+            yield return obj;
+        }
+        public async IAsyncEnumerable<object> ReturnMountainByName(string name)
         {
             var obj = new object();
             try
             {
                 obj = await _graphClient.Cypher.Match("(m:Mountain)")
                                                 .Where((Mountain m) => m.name == name)
-                                                .Return(m => m.As<Mountain>()).ResultsAsync;
+                                                .With("m{.*, Id:id(m)} AS mountain")
+                                                .Return(mountain => mountain.As<Mountain>())
+                                                .ResultsAsync;
             }
             catch(Exception e)
             {
@@ -59,16 +78,23 @@ namespace back.Modules
             } 
             yield return obj;
         }
-        public async IAsyncEnumerable<object> UpdateMountain(Guid id, Mountain mountain)
+       
+        public async IAsyncEnumerable<object> UpdateMountain( Mountain mountain)
         {
             var obj = new object( );
             try
             {
                 obj = await _graphClient.Cypher.Match("(m:Mountain)")
-                                         .Where((Mountain m) => m.Id == id)
+                                         .Where("id(m)=$id")
+                                         .WithParam("id",mountain.Id)
                                          .Set("m = $mountain")
-                                         .WithParam("mountain", mountain)
-                                         .Return(m => m.As<Mountain>()).ResultsAsync;
+                                         .WithParam("mountain", new{
+                                            mountain.name,
+                                            mountain.surface
+                                         })
+                                         .With("m{.*, Id:id(m)} AS mountain")
+                                         .Return(mountain => mountain.As<Mountain>())
+                                         .ResultsAsync;
             }
             catch (Exception e)
             {
@@ -79,13 +105,14 @@ namespace back.Modules
             yield return obj;
 
         }
-        public async IAsyncEnumerable<bool> DeleteMountain(Guid id)
+        public async IAsyncEnumerable<bool> DeleteMountain(long id)
         {
             bool done = true;
             try
             {
                 await _graphClient.Cypher.Match("(m:Mountain)")
-                                         .Where((Mountain m) => m.Id == id)
+                                         .Where("id(m)=$id")
+                                         .WithParam("id",id)
                                          .DetachDelete("m")
                                          .ExecuteWithoutResultsAsync();
 
@@ -97,15 +124,19 @@ namespace back.Modules
             }
             yield return done;
         }
-        public async IAsyncEnumerable<object> AddRegion(Guid mountainId, Guid regionId)
+        public async IAsyncEnumerable<object> AddRegion(long mountainId, long regionId)
         {
             var obj = new object();
             try
             {
                 obj = await _graphClient.Cypher.Match("(m:Mountain), (reg: Region)")
-                                                .Where((Mountain m, Region reg)=> m.Id == mountainId && reg.Id == regionId)
+                                                .Where("id(m)=$mountainId and id(reg)=$regionId")
+                                                .WithParam("mountainId",mountainId)
+                                                .WithParam("regionId",regionId)
                                                 .Create("(m)-[r:hasRegion]->(reg)")
-                                                .Return(m => m.As<Mountain>()).ResultsAsync;
+                                                .With("m{.*, Id:id(m)} AS mountain")
+                                                .Return(mountain => mountain.As<Mountain>())
+                                                .ResultsAsync;
             }
             catch(Exception e)
             {

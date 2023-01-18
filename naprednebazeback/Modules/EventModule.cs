@@ -28,13 +28,13 @@ namespace naprednebazeback.Modules
             try
             {
                 Dictionary<string,object> dictParam = new Dictionary<string, object>();
-                dictParam.Add("Id", Guid.NewGuid());
                 dictParam.Add("Name", name);
                 dictParam.Add("Date", date);
                 dictParam.Add("Difficulty", difficulty);
-                obj = await _graphClient.Cypher.Create("(h:HikeEvent{Id:$Id, name:$Name, date:$Date, difficulty:$Difficulty})")
+                obj = await _graphClient.Cypher.Create("(h:HikeEvent{ name:$Name, date:$Date, difficulty:$Difficulty})")
                                                 .WithParams(dictParam)
-                                                .Return(h=>h.As<Hike>())
+                                                .With("h{.*, Id:id(h)} AS hiking")
+                                                .Return(hiking=>hiking.As<Hike>())
                                                 .ResultsAsync;
             }
             catch(Exception e)
@@ -49,13 +49,13 @@ namespace naprednebazeback.Modules
             try
             {
                 Dictionary<string,object> dictParam = new Dictionary<string, object>();
-                dictParam.Add("Id", Guid.NewGuid());
                 dictParam.Add("Name", name);
                 dictParam.Add("Date", date);
                 dictParam.Add("Difficulty", difficulty);
-                obj = await _graphClient.Cypher.Create("(r:RaceEvent{Id:$Id, name:$Name, date:$Date, difficulty:$Difficulty})")
+                obj = await _graphClient.Cypher.Create("(r:RaceEvent{ name:$Name, date:$Date, difficulty:$Difficulty})")
                                                 .WithParams(dictParam)
-                                                .Return(r=>r.As<Race>())
+                                                .With("r{.*, Id:id(r)} AS race")
+                                                .Return(race=>race.As<Race>())
                                                 .ResultsAsync;
             }
             catch(Exception e)
@@ -64,14 +64,24 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }
-        public async IAsyncEnumerable<object> ReturnHikeEventById(Guid id)
+        public async IAsyncEnumerable<object> ReturnAllHikeEvents()
+        {
+            var obj = await _graphClient.Cypher.Match("(h:HikeEvent)")
+                                                .With("h{.*, Id:id(h)} AS hiking")
+                                                .Return(hiking=>hiking.As<Hike>())
+                                                .ResultsAsync;                    
+            yield return obj;
+        }
+        public async IAsyncEnumerable<object> ReturnHikeEventById(long id)
         {
             var obj = new object();
             try
             {
                 obj = await _graphClient.Cypher.Match("(h:HikeEvent)")
-                                                .Where((Hike h)=> h.Id == id)
-                                                .Return(h=>h.As<Hike>())
+                                                .Where("id(h)=$Id")
+                                                .WithParam("Id",id)
+                                                .With("h{.*, Id:id(h)} AS hiking")
+                                                .Return(hiking=>hiking.As<Hike>())
                                                 .ResultsAsync;                                               
             }
             catch(Exception e)
@@ -87,8 +97,9 @@ namespace naprednebazeback.Modules
             {
                 obj = await _graphClient.Cypher.Match("(h:HikeEvent)")
                                                 .Where((Hike h)=> h.name == name)
-                                                .Return(h=>h.As<Hike>())
-                                                .ResultsAsync;                                           
+                                                .With("h{.*, Id:id(h)} AS hiking")
+                                                .Return(hiking=>hiking.As<Hike>())
+                                                .ResultsAsync;                                          
             }
             catch(Exception e)
             {
@@ -96,14 +107,24 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }
-        public async IAsyncEnumerable<object> ReturnRaceEventById(Guid id)
+        public async IAsyncEnumerable<object> ReturnAllRaceEvents()
+        {
+            var obj = await _graphClient.Cypher.Match("(r:RaceEvent)")
+                                                .With("r{.*, Id:id(r)} AS race")
+                                                .Return(race=>race.As<Race>())
+                                                .ResultsAsync;    
+            yield return obj;
+        }
+        public async IAsyncEnumerable<object> ReturnRaceEventById(long id)
         {
             var obj = new object();
             try
             {
                 obj = await _graphClient.Cypher.Match("(r:RaceEvent)")
-                                                .Where((Race r)=> r.Id == id)
-                                                .Return(r=>r.As<Race>())
+                                                .Where("id(r)=$Id")
+                                                .WithParam("Id",id)
+                                                .With("r{.*, Id:id(r)} AS race")
+                                                .Return(race=>race.As<Race>())
                                                 .ResultsAsync;                                            
             }
             catch(Exception e)
@@ -119,7 +140,8 @@ namespace naprednebazeback.Modules
             {
                 obj = await _graphClient.Cypher.Match("(r:RaceEvent)")
                                                 .Where((Race r)=> r.name == name)
-                                                .Return(r=>r.As<Race>())
+                                                .With("r{.*, Id:id(r)} AS race")
+                                                .Return(race=>race.As<Race>())
                                                 .ResultsAsync;                                        
             }
             catch(Exception e)
@@ -134,10 +156,16 @@ namespace naprednebazeback.Modules
             try
             {
                 obj = await _graphClient.Cypher.Match("(r:RaceEvant)")
-                                                .Where((Race r)=> r.Id == race.Id)
+                                                .Where("id(r)=$Id")
+                                                .WithParam("Id", race.Id)
                                                 .Set("r=$race")
-                                                .WithParam("race",race)
-                                                .Return(r=>r.As<Race>())
+                                                .WithParam("race",new {
+                                                    race.name,
+                                                    race.date,
+                                                    race.difficulty
+                                                })
+                                                .With("r{.*, Id:id(r)} AS race")
+                                                .Return(race=>race.As<Race>())
                                                 .ResultsAsync; 
             }
             catch(Exception e)
@@ -152,11 +180,17 @@ namespace naprednebazeback.Modules
             try
             {
                 obj = await _graphClient.Cypher.Match("(h:HikeEvant)")
-                                                .Where((Hike h)=> h.Id == hike.Id)
-                                                .Set("r=$race")
-                                                .WithParam("race",hike)
-                                                .Return(h=>h.As<Hike>())
-                                                .ResultsAsync; 
+                                                .Where("id(h)=$Id")
+                                                .WithParam("Id",hike.Id)
+                                                .Set("h=$hike")
+                                                .WithParam("hike",new {
+                                                    hike.name,
+                                                    hike.date,
+                                                    hike.difficulty
+                                                })
+                                                .With("h{.*, Id:id(h)} AS hiking")
+                                                .Return(hiking=>hiking.As<Hike>())
+                                                .ResultsAsync;    
             }
             catch(Exception e)
             {
@@ -164,15 +198,17 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }
-        public async IAsyncEnumerable<object> DeleteRace(Guid id)
+        public async IAsyncEnumerable<object> DeleteRace(long id)
         {
             var obj = new object();
             try
             {
                 obj = await _graphClient.Cypher.Match("r:RaceEvent")
-                                                .Where((Race r)=> r.Id == id)
+                                                .Where("id(h)=$Id")
+                                                .WithParam("Id",id)
                                                 .DetachDelete("r")
-                                                .Return(r=>r.As<Race>())
+                                                .With("r{.*, Id:id(r)} AS race")
+                                                .Return(race=>race.As<Race>())
                                                 .ResultsAsync; 
             }   
             catch(Exception e)
@@ -181,16 +217,18 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }
-          public async IAsyncEnumerable<object> DeleteHike(Guid id)
+          public async IAsyncEnumerable<object> DeleteHike(long id)
         {
             var obj = new object();
             try
             {
                 obj = await _graphClient.Cypher.Match("h:HikeEvent")
-                                                .Where((Hike h)=> h.Id == id)
+                                                .Where("id(h)=$Id")
+                                                .WithParam("Id",id)
                                                 .DetachDelete("h")
-                                                .Return(h=>h.As<Hike>())
-                                                .ResultsAsync; 
+                                                .With("h{.*, Id:id(h)} AS hiking")
+                                                .Return(hiking=>hiking.As<Hike>())
+                                                .ResultsAsync;
             }   
             catch(Exception e)
             {
@@ -199,16 +237,21 @@ namespace naprednebazeback.Modules
             yield return obj;
         }
 
-        public async IAsyncEnumerable<object> AddMountainTopForRace(Guid mountainTopId, Guid raceId)
+        public async IAsyncEnumerable<object> AddMountainTopForRace(long mountainTopId, long raceId)
         {
             var obj = new object();
             try
             {
+                Dictionary<string, object> dictParam = new Dictionary<string, object>();
+                dictParam.Add("mountainTopId",mountainTopId);
+                dictParam.Add("raceId",raceId);
                 obj = await _graphClient.Cypher.Match("(m:MountainTop), (r: RaceEvent)")
-                                                .Where((MountainTop m, Race r)=> m.Id == mountainTopId && r.Id == raceId)
+                                                .Where("id(m)=$mountainTopId and id(r)=$raceId")
+                                                .WithParams(dictParam)
                                                 .Create("(r)-[isHeldOn]->(m)")
-                                                .Return(r=>r.As<Race>())
-                                                .ResultsAsync;
+                                                .With("r{.*, Id:id(r)} AS race")
+                                                .Return(race=>race.As<Race>())
+                                                .ResultsAsync; 
             }
             catch(Exception e)
             {
@@ -216,15 +259,20 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }
-         public async IAsyncEnumerable<object> AddMountainTopForHike(Guid mountainTopId, Guid hikeId)
+         public async IAsyncEnumerable<object> AddMountainTopForHike(long mountainTopId, long hikeId)
         {
             var obj = new object();
             try
             {
+                Dictionary<string, object> dictParam = new Dictionary<string, object>();
+                dictParam.Add("mountainTopId",mountainTopId);
+                dictParam.Add("hikeId",hikeId);
                 obj = await _graphClient.Cypher.Match("(m:MountainTop), (h: HikeEvent)")
-                                                .Where((MountainTop m, Hike h)=> m.Id == mountainTopId && h.Id == hikeId)
-                                                .Create("(h)-[isHeldOn]->(m)")
-                                                .Return(h=>h.As<Hike>())
+                                                .Where("id(m)=$mountainTopId and id(h)=$hikeId")
+                                                .WithParams(dictParam)
+                                                .Create("(h)-[isHikingOn]->(m)")
+                                                .With("h{.*, Id:id(h)} AS hiking")
+                                                .Return(hiking=>hiking.As<Hike>())
                                                 .ResultsAsync;
             }
             catch(Exception e)

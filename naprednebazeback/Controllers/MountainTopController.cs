@@ -31,9 +31,9 @@ namespace naprednebazeback.Controllers
         }
         [HttpGet]
         [Route("id/{id}")]
-        public async Task<ActionResult> GetMountainTopById(string id)
+        public async Task<ActionResult> GetMountainTopById(long id)
         {
-            return Ok(_modules.ReturnMountainTopById(new Guid(id)));
+            return Ok(_modules.ReturnMountainTopById(id));
         }
         [HttpGet]
         [Route("name/{name}")]
@@ -41,23 +41,29 @@ namespace naprednebazeback.Controllers
         {
             return Ok(_modules.ReturnMountainTopByName(name));
         }
+        [HttpGet]
+        [Route("")]
+        public async Task<ActionResult> GetAllMountainTops()
+        {
+            return Ok(_modules.ReturnMountainTops());
+        }
         [HttpPut]
         [Route("")]
-        public async Task<ActionResult> UpdateMountainTop( [FromBody]MountainTop top)
+        public async Task<ActionResult> UpdateMountainTop([FromBody]MountainTop top)
         {
             return Ok(_modules.UpdateMountainTop(top));
         }
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ActionResult> DeleteMoutainTop(string id)
+        public async Task<ActionResult> DeleteMoutainTop(long id)
         {
-            return Ok(_modules.DeleteMountainTop(new Guid(id)));
+            return Ok(_modules.DeleteMountainTop(id));
         }
         [HttpPost]
         [Route("{mountainTopId}/mountain/{mountainId}")]
-        public async Task<ActionResult> AddMountain(string mountainTopId, string mountainId)
+        public async Task<ActionResult> AddMountain(long mountainTopId, long mountainId)
         {
-            return Ok(_modules.AddMountain(new Guid(mountainTopId), new Guid(mountainId)));
+            return Ok(_modules.AddMountain(mountainTopId, mountainId));
         }
     }
 }

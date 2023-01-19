@@ -20,7 +20,7 @@ namespace naprednebazeback.Modules
             _logger = logger;
             _graphClient = graphClient;
         }
-        public async IAsyncEnumerable<object> CreateMountaineer(string name, string surname, int age, long memberCard)
+        public async IAsyncEnumerable<object>  CreateMountaineer(string name, string surname, int age, long memberCard,long accountId)
         {
             var obj = new object();
             try
@@ -31,11 +31,21 @@ namespace naprednebazeback.Modules
                 dictParams.Add("Age", age);
                 dictParams.Add("MemberCard", memberCard);
                 dictParams.Add("NumberOfClimbs", 0);
-                obj = await _graphClient.Cypher.Create("(m:Mountaineer{name:$Name, surname:$Surname, age:$Age, memberCard:$MemberCard,numberOfClimbs:$NumberOfClimbs })")
+                obj = await _graphClient.Cypher.Match("(a:Account)")
+                                                .Where("id(a) =$aId")
+                                                .WithParam("aId", accountId)
+                                                .Create("(m:Person:Mountaineer{name:$Name, surname:$Surname, age:$Age, memberCard:$MemberCard,numberOfClimbs:$NumberOfClimbs })")
                                                 .WithParams(dictParams)
+                                                .Create("(m)-[h:hasAccount{role:$Role}]->(a)")
+                                                .WithParam("Role","Mountaineer")
                                                 .With("m{.*, Id:id(m)} AS mountaineer")
-                                                .Return(mountaineer => mountaineer.As<Mountaineer>())
+                                                .Return((mountaineer) => 
+                                                        new {
+                                                            id = mountaineer.As<Mountaineer>().Id,
+                                                    
+                                                            })
                                                 .ResultsAsync;
+                            
             }
             catch (Exception e)
             {
@@ -44,7 +54,7 @@ namespace naprednebazeback.Modules
             yield return obj;
         }
 
-        public async IAsyncEnumerable<object> CreateHikingGuide(string name, string surname, int age, long licenseNumber)
+        public async IAsyncEnumerable<object> CreateHikingGuide(string name, string surname, int age, long licenseNumber, long accountId)
         {
             var obj = new object();
             try
@@ -57,10 +67,14 @@ namespace naprednebazeback.Modules
                 dictParams.Add("LicenseNumber", licenseNumber);
                 dictParams.Add("Rating", 0);
                 dictParams.Add("Role", "HikingGuide");
-                obj = await _graphClient.Cypher.Create("(h:HikingGuide{ name:$Name, surname:$Surname, age:$Age, licenseNumber:$LicenseNumber,Rating:$Rating, role:$Role })")
+                obj = await _graphClient.Cypher.Match("(a:Account)")
+                                                .Where("id(a) =$aId")
+                                                .WithParam("aId", accountId)
+                                                .Create("(h:Person:HikingGuide{ name:$Name, surname:$Surname, age:$Age, licenseNumber:$LicenseNumber,Rating:$Rating, role:$Role })")
                                                 .WithParams(dictParams)
+                                                .Create("(h)-[k:hasAccount{role:$Role}]->(a)")
                                                 .With("h{.*, Id:id(h)} AS hiking")
-                                                .Return(hiking => hiking.As<HikingGuide>())
+                                                .Return((hiking) => hiking.As<HikingGuide>().Id)
                                                 .ResultsAsync;
             }
             catch (Exception e)
@@ -69,7 +83,7 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }
-        public async IAsyncEnumerable<object> CreateReferee(string name, string surname, int age)
+        public async IAsyncEnumerable<object> CreateReferee(string name, string surname, int age, long accountId)
         {
             var obj = new object();
             try
@@ -79,10 +93,14 @@ namespace naprednebazeback.Modules
                 dictParams.Add("Surname", surname);
                 dictParams.Add("Age", age);
                 dictParams.Add("Role", "Referee");
-                obj = await _graphClient.Cypher.Create("(r:Referee{ name:$Name, surname:$Surname, age:$Age, role:$Role })")
+                obj = await _graphClient.Cypher.Match("(a:Account)")
+                                                .Where("id(a) =$aId")
+                                                .WithParam("aId", accountId)
+                                                .Create("(r:Person:Referee{ name:$Name, surname:$Surname, age:$Age, role:$Role })")
                                                 .WithParams(dictParams)
+                                                .Create("(r)-[h:hasAccount{role:$Role}]->(a)")
                                                 .With("r{.*, Id:id(r)} AS referee")
-                                                .Return(referee => referee.As<Referee>())
+                                                .Return(referee => referee.As<Referee>().Id)
                                                 .ResultsAsync;
             }
             catch (Exception e)

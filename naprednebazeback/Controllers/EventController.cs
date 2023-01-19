@@ -21,25 +21,25 @@ namespace naprednebazeback.Controllers
         }
 
         [HttpPost]
-        [Route("hike/{name}/{date}/{difficulty}")]
-        public async Task<ActionResult> CreateHike(string name, DateTime date, int difficulty)
+        [Route("hike/{name}/{date}/{difficulty}/{about}")]
+        public async Task<ActionResult> CreateHike(string name, DateTime date, int difficulty,string about)
         {
-            return Ok(_module.CreateHikeEvent(name, date, difficulty));
+            return Ok(_module.CreateHikeEvent(name, date, difficulty,about));
         }
         [HttpPost]
-        [Route("race/{name}/{date}/{difficulty}")]
-        public async Task<ActionResult> CreateRace(string name, DateTime date, int difficulty)
+        [Route("race/{name}/{date}/{difficulty}/{about}")]
+        public async Task<ActionResult> CreateRace(string name, DateTime date, int difficulty,string about)
         {
-            return Ok(_module.CreateRaceEvent(name, date, difficulty));
+            return Ok(_module.CreateRaceEvent(name, date, difficulty,about));
         }
         [HttpGet]
-        [Route("")]
+        [Route("hike")]
         public async Task<ActionResult> ReturnAllHikeEvents()
         {
             return Ok(_module.ReturnAllHikeEvents());
         }
         [HttpGet]
-        [Route("")]
+        [Route("race")]
         public async Task<ActionResult> ReturnAllRaceEvents()
         {
             return Ok(_module.ReturnAllRaceEvents());

@@ -53,7 +53,8 @@ namespace naprednebazeback.Controllers
         [Route("{id}")]
         public async Task<ActionResult> DeleteRegion(long id)
         {
-            return Ok(_module.DeleteRegion(id));
+            _module.DeleteRegion(id);
+            return Ok();
         }
         
     }

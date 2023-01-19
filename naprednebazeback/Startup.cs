@@ -54,12 +54,31 @@ namespace naprednebazeback
             services.AddSignalR();
           
             services.AddCors( options=>{
-                options.AddDefaultPolicy(builder=>
+                options.AddPolicy("CORS",builder=>
                 {
                     builder.WithOrigins("https:localhost:3000")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
+                    builder.WithOrigins(new string[]
+                    {
+                        "https://localhost:8080",
+                        "https://localhost:8080",
+                        "http://127.0.0.1:8080",
+                        "http://127.0.0.1:8080",
+                        "https://localhost:5001",
+                        "http://127.0.0.1:5500",
+                        "https://localhost:5001",
+                        "http://127.0.0.1:5001",
+                        "http://127.0.0.1:3000",
+                        "http://localhost:3000",
+                        "https://127.0.0.1:3000",
+                        "https://localhost:3000",
+                        "https:localhost:3000"
+                    })
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
                 });
             });
         }
@@ -78,7 +97,7 @@ namespace naprednebazeback
 
             app.UseRouting();
             
-             app.UseCors();
+             app.UseCors("CORS");
 
             app.UseAuthorization();
 

@@ -18,14 +18,6 @@ function SignUp()
 
     return(<>
         <div className="signin">
-             <div className="signin-part">
-                <p>First name:</p>
-                <input onChange={(e)=>{setFirstName(e.target.value)}}/>
-            </div>
-            <div className="signin-part">
-                <p>Last name:</p>
-                <input onChange={(e)=>{setLastName(e.target.value)}}/>
-            </div>
             <div className="signin-part">
                 <p>Email:</p>
                 <input onChange={(e)=>{setEmail(e.target.value)}}/>

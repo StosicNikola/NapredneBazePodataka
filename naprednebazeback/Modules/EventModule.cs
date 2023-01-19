@@ -22,7 +22,7 @@ namespace naprednebazeback.Modules
             _logger = logger;
         }
 
-        public async IAsyncEnumerable<object> CreateHikeEvent(string name, DateTime date, int difficulty)
+        public async IAsyncEnumerable<object> CreateHikeEvent(string name, DateTime date, int difficulty, string about)
         {
             var obj = new object();
             try
@@ -31,7 +31,8 @@ namespace naprednebazeback.Modules
                 dictParam.Add("Name", name);
                 dictParam.Add("Date", date);
                 dictParam.Add("Difficulty", difficulty);
-                obj = await _graphClient.Cypher.Create("(h:HikeEvent{ name:$Name, date:$Date, difficulty:$Difficulty})")
+                dictParam.Add("About", about);
+                obj = await _graphClient.Cypher.Create("(h:HikeEvent{ name:$Name, date:$Date, difficulty:$Difficulty, about:$About})")
                                                 .WithParams(dictParam)
                                                 .With("h{.*, Id:id(h)} AS hiking")
                                                 .Return(hiking=>hiking.As<Hike>())
@@ -43,7 +44,7 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }
-         public async IAsyncEnumerable<object> CreateRaceEvent(string name, DateTime date, int difficulty)
+         public async IAsyncEnumerable<object> CreateRaceEvent(string name, DateTime date, int difficulty,string about)
         {
             var obj = new object();
             try
@@ -52,7 +53,8 @@ namespace naprednebazeback.Modules
                 dictParam.Add("Name", name);
                 dictParam.Add("Date", date);
                 dictParam.Add("Difficulty", difficulty);
-                obj = await _graphClient.Cypher.Create("(r:RaceEvent{ name:$Name, date:$Date, difficulty:$Difficulty})")
+                 dictParam.Add("About", about);
+                obj = await _graphClient.Cypher.Create("(r:RaceEvent{ name:$Name, date:$Date, difficulty:$Difficulty,about:$About})")
                                                 .WithParams(dictParam)
                                                 .With("r{.*, Id:id(r)} AS race")
                                                 .Return(race=>race.As<Race>())

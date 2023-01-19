@@ -23,26 +23,27 @@ namespace naprednebazeback.Controllers
 
 
         [HttpPost]
-        [Route("mountaineer/{name}/{surname}/{age}/{memberCard}")]
-        public async Task<ActionResult> CreateMounatineer(string name, string surname, int age, long memberCard)
+        [Route("mountaineer/{name}/{surname}/{age}/{memberCard}/{accountId}")]
+        public async Task<ActionResult> CreateMounatineer(string name, string surname, int age, long memberCard, long accountId)
         {
-            return Ok(_module.CreateMountaineer(name,surname,age,memberCard));
+           
+            return Ok( _module.CreateMountaineer(name,surname,age,memberCard,accountId));
         }
 
         
         [HttpPost]
-        [Route("hikingguide/{name}/{surname}/{age}/{licenseNumber}")]
-        public async Task<ActionResult> CreateHikingGuide(string name, string surname, int age, long licenseNumber)
+        [Route("hikingguide/{name}/{surname}/{age}/{licenseNumber}/{accountId}")]
+        public async Task<ActionResult> CreateHikingGuide(string name, string surname, int age, long licenseNumber,long accountId)
         {
-            return Ok(_module.CreateHikingGuide(name,surname,age,licenseNumber));
+            return Ok(_module.CreateHikingGuide(name,surname,age,licenseNumber,accountId));
         }
 
         
         [HttpPost]
-        [Route("referee/{name}/{surname}/{age}")]
-        public async Task<ActionResult> CreateReferee(string name, string surname, int age)
+        [Route("referee/{name}/{surname}/{age}/{accountId}")]
+        public async Task<ActionResult> CreateReferee(string name, string surname, int age,long accountId)
         {
-            return Ok(_module.CreateReferee(name,surname,age));
+            return Ok(_module.CreateReferee(name,surname,age,accountId));
         }
         [HttpGet]
         [Route("referee")]

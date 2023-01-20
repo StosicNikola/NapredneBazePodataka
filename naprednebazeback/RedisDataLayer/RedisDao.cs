@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using naprednebazeback.DTOs;
 using Microsoft.Extensions.Logging;
+using StackExchange.Redis;
 
 namespace naprednebazeback.RedisDataLayer
 {
@@ -20,6 +21,11 @@ namespace naprednebazeback.RedisDataLayer
             _logger = logger;       
          }
 
+         public RedisDao(){
+            
+         }
+
+        public RedisClient Redis {get{ return redis;} }
          public void AddRunnerToSet(MountainRunnerView mrv){
             string blub = ConvertToBlubForMain(mrv.PersonId,mrv.Name,mrv.TimeStampRunner);
             redis.AddItemToSortedSet(MainLeaderboardForAllPerson,blub,mrv.Score);
@@ -114,5 +120,49 @@ namespace naprednebazeback.RedisDataLayer
             return items;
             
          }
+
+     
+
+        public void SaveMessagesToHash(MessageView message){
+            string keyHash = GetKeyForHash(message.Room);
+            string hashColumn = GetColumnForHash(message.TimeSendMessage);
+            string msg = GetValueForHash(message);
+            string msgFromHash = redis.GetValueFromHash(keyHash,hashColumn);
+            redis.SetEntryInHash(keyHash,hashColumn,msgFromHash+"$"+msg);
+        }
+
+        public string GetKeyForHash(string room){
+          return "MessageRoom#"+ room;
+        }
+
+        public string GetColumnForHash(DateTime time){
+          return "MessagesForDay#"+ time.Year+"#"+time.DayOfYear;
+        }
+        public string GetValueForHash(MessageView message){
+          return message.Name + "#"+message.PersonId+ "#" + message.Message + "#" + message.TimeSendMessage.ToString("HH:mm:ss");
+        }
+
+        public List<MessageView> GetMessageRoomForToday(String room){
+            string keyHash = GetKeyForHash(room);
+            string hashColumn  = GetColumnForHash(DateTime.Now);
+            string blub = redis.GetValueFromHash(keyHash,hashColumn);
+            if(blub == null) return new List<MessageView>();
+            string[] msgs = blub.Split("$");
+            List<MessageView> msg = new List<MessageView>();      
+             foreach (string s in msgs.Skip(1)){
+               string[] m = s.Split("#");
+               long id = (long)Convert.ToDouble(m[1]);
+               if(id<0){
+                  msg.Add(new MessageView(id,m[0],room,m[2],Convert.ToDateTime(m[3])));
+               }
+               else{
+                  msg.Add(new MessageView(id,m[0],room,m[2],Convert.ToDateTime(m[3])));
+               }
+            }
+
+            return msg;
+        }
+
+        
     }
 }

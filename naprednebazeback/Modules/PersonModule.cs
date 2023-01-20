@@ -217,11 +217,13 @@ namespace naprednebazeback.Modules
             var obj = new object();
             try
             {
-                obj = await _graphClient.Cypher.Match("(m:Mountaineer)")
+                obj = await _graphClient.Cypher.Match("(m:Person:Mountaineer)")
                                                 .Where("id(m)=$Id")
                                                 .WithParam("Id",id)
                                                 .With("m{.*, Id:id(m)} AS mountaineer")
-                                                .Return(mountaineer => mountaineer.As<Mountaineer>())
+                                                .Return((mountaineer) => new {
+                                                    person = mountaineer.As<Mountaineer>()
+                                                })
                                                 .ResultsAsync;
             }
             catch (Exception e)

@@ -12,8 +12,11 @@ using Neo4jClient.Cypher;
 
 namespace naprednebazeback.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class RegionController:ControllerBase
     {
+ 
         private static RegionModule _module;
         public RegionController(IGraphClient graphClient, ILogger<RegionController> logger)
         {

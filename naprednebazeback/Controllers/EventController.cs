@@ -33,6 +33,12 @@ namespace naprednebazeback.Controllers
             return Ok(_module.CreateRaceEvent(name, date, difficulty,about));
         }
         [HttpGet]
+        [Route("event/{eventId}")]
+        public async Task<ActionResult> ReturnEvent(long eventId)
+        {
+            return Ok(_module.ReturnEvent(eventId));
+        }
+        [HttpGet]
         [Route("hike")]
         public async Task<ActionResult> ReturnAllHikeEvents()
         {

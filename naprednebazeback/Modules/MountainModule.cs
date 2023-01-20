@@ -162,6 +162,25 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         } 
+        public async IAsyncEnumerable<object> ReturnMountainInRegion(long regionId)
+        {
+            var obj = new object();
+            try
+            {
+                obj = await _graphClient.Cypher.Match("(m:Mountain)-[r:hasRegion]->(reg:Region)")
+                                                .Where("id(reg)=$Id")
+                                                .WithParam("Id",regionId)
+                                                .With("m{.*, Id:id(m)} AS mountain")
+                                                .Return(mountain => mountain.As<Mountain>())
+                                                .ResultsAsync;
+            }   
+            catch(Exception e)
+            {
+                _logger.LogError("Error returning mountain! " + e.Message );
+            }
+            yield return obj;
+        }
+        
 
     }
 

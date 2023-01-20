@@ -6,7 +6,8 @@ import './uspon.css'
 import Lobby from '../../components/Lobby';
 import Chat from '../../components/Chat';
 import { HubConnectionBuilder, LogLevel , HttpTransportType} from '@microsoft/signalr';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function Uspon()
 {
@@ -14,7 +15,8 @@ function Uspon()
     const [connection,setConnection] = useState();
     const [messages,setMessages] = useState([]);
     const [users, setUsers] = useState([]);
-
+    const [loggedIn, setLoggedIn] = useState()
+    const [info,setInfo] = useState(null)
 
     const joinRoom = async (user,room) =>{
         try{
@@ -65,13 +67,24 @@ function Uspon()
             console.log(e);
         }
     }
+    useEffect(()=>
+    {
+        if (localStorage.getItem("id") !== null)
+            setLoggedIn(true)
+        else
+            setLoggedIn(false)
+        if(info ===null)
+        {
+            axios.get()
+        }
+    })
 
     return(<div className='uspon-main-div'>
+        <Header />
         <h1>{handle}</h1>
         <div className='uspon'>
             <div className='uspon-info'>
             <h2>Datum: dd.mm.yyyy.</h2>
-            <img className='uspon-image' src="../../../public/assets/images.jpg" alt="slika" />
             </div>
             <div className='uspon-about'>
                 <h3>About!</h3>

@@ -68,6 +68,13 @@ namespace naprednebazeback.Controllers
         {
             return Ok(_modules.AddRegion(mountainId,regionId));
         }
+        [HttpGet]
+        [Route("region/{regionId}")]
+        public async Task<ActionResult> ReturnMountainInRegion(long regionId)
+        {
+            return Ok(_modules.ReturnMountainInRegion(regionId));
+        }
+       
 
     }
 

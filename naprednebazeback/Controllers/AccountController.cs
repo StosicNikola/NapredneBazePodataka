@@ -39,7 +39,7 @@ namespace naprednebazeback.Modules
                 return Ok(obj);
         }
         [HttpPost]
-        [Route("SignUp/Mountaineer{email}/{password}")]
+        [Route("SignUp/Mountaineer/{email}/{password}")]
         public async Task<ActionResult> SignUp(string email, string password)
         {
            

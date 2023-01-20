@@ -12,8 +12,11 @@ using Neo4jClient.Cypher;
 
 namespace naprednebazeback.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class RegionController:ControllerBase
     {
+ 
         private static RegionModule _module;
         public RegionController(IGraphClient graphClient, ILogger<RegionController> logger)
         {
@@ -53,7 +56,8 @@ namespace naprednebazeback.Controllers
         [Route("{id}")]
         public async Task<ActionResult> DeleteRegion(long id)
         {
-            return Ok(_module.DeleteRegion(id));
+            _module.DeleteRegion(id);
+            return Ok();
         }
         
     }

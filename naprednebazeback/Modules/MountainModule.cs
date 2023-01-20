@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Neo4jClient;
 
 
-namespace back.Modules
+namespace naprednebazeback.Modules
 {
     public class MountainModule
     {
@@ -22,15 +22,15 @@ namespace back.Modules
             _graphClient = graphClient;
             _logger = logger;
         }
-        public async IAsyncEnumerable<object> CreateMountain(string name, string surface)
+        public async IAsyncEnumerable<object> CreateMountain(string name, float surface)
         {
             var obj = new object();
             try
             {
                 Dictionary<string, object> dictParam = new Dictionary<string, object>();
                 dictParam.Add("Name", name);
-                dictParam.Add("Surface", float.Parse(surface, CultureInfo.InvariantCulture.NumberFormat));
-                obj =  await _graphClient.Cypher.Create("(n:Mountain{name: $Name, surface: $Surface})")
+                dictParam.Add("Surface", surface);
+                obj =  await _graphClient.Cypher.Create("(m:Mountain{name: $Name, surface: $Surface})")
                                                 .WithParams(dictParam)
                                                 .With("m{.*, Id:id(m)} AS mountain")
                                                 .Return(mountain => mountain.As<Mountain>())
@@ -45,7 +45,7 @@ namespace back.Modules
         }
         public async IAsyncEnumerable<object> ReturnAllMountains()
         {
-            var obj = await _graphClient.Cypher.Match("m:Mountain")
+            var obj = await _graphClient.Cypher.Match("(m:Mountain)")
                                                 .With("m{.*, Id:id(m)} AS mountain")
                                                 .Return(mountain => mountain.As<Mountain>())
                                                 .ResultsAsync;
@@ -144,6 +144,43 @@ namespace back.Modules
             }
             yield return obj;
         } 
+        public async IAsyncEnumerable<object> AddRegionByName(string mountainName, string regionName)
+        {
+            var obj = new object();
+            try
+            {
+                obj = await _graphClient.Cypher.Match("(m:Mountain), (reg: Region)")
+                                                .Where((Mountain m,Region reg )=>m.name == mountainName && reg.name ==regionName)
+                                                .Create("(m)-[r:hasRegion]->(reg)")
+                                                .With("m{.*, Id:id(m)} AS mountain")
+                                                .Return(mountain => mountain.As<Mountain>())
+                                                .ResultsAsync;
+            }
+            catch(Exception e)
+            {
+                _logger.LogError("Error adding region! " + e.Message);
+            }
+            yield return obj;
+        } 
+        public async IAsyncEnumerable<object> ReturnMountainInRegion(long regionId)
+        {
+            var obj = new object();
+            try
+            {
+                obj = await _graphClient.Cypher.Match("(m:Mountain)-[r:hasRegion]->(reg:Region)")
+                                                .Where("id(reg)=$Id")
+                                                .WithParam("Id",regionId)
+                                                .With("m{.*, Id:id(m)} AS mountain")
+                                                .Return(mountain => mountain.As<Mountain>())
+                                                .ResultsAsync;
+            }   
+            catch(Exception e)
+            {
+                _logger.LogError("Error returning mountain! " + e.Message );
+            }
+            yield return obj;
+        }
+        
 
     }
 

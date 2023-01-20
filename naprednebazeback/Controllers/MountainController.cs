@@ -7,9 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Neo4jClient;
-using back.Modules;
 using Neo4jClient.Cypher;
-
+using naprednebazeback.Modules;
 
 namespace naprednebazeback.Controllers
 {   
@@ -29,7 +28,7 @@ namespace naprednebazeback.Controllers
 
         [HttpPost]
         [Route("{name}/{surface}")]
-        public async Task<ActionResult> CreateMountain(string name, string surface )
+        public async Task<ActionResult> CreateMountain(string name, float surface )
         {
             return Ok( _modules.CreateMountain(name,surface));
         }
@@ -69,6 +68,13 @@ namespace naprednebazeback.Controllers
         {
             return Ok(_modules.AddRegion(mountainId,regionId));
         }
+        [HttpGet]
+        [Route("region/{regionId}")]
+        public async Task<ActionResult> ReturnMountainInRegion(long regionId)
+        {
+            return Ok(_modules.ReturnMountainInRegion(regionId));
+        }
+       
 
     }
 

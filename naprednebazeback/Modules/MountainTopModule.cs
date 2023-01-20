@@ -154,6 +154,42 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }
+        public async IAsyncEnumerable<object> ReturnMountainTopsOnMountain(long mountainId)
+        {
+            var obj = new object();
+            try
+            {
+                obj = await _graphClient.Cypher.Match("(m:Mountain)<-[r:isLocatedOn]-(mt:MountainTop)")
+                                                .Where("id(m)=$Id")
+                                                .WithParam("Id",mountainId)
+                                                .With("mt{.*, Id:id(mt)} AS mountainTop")
+                                                .Return(mountainTop=>mountainTop.As<MountainTop>())
+                                                .ResultsAsync;
+            }
+            catch(Exception e)
+            {
+                _logger.LogError("Error returnig mountain tops! " + e.Message);
+            }
+            yield return obj;
+        }
+        public async IAsyncEnumerable<object> ReturnMountainTopsInRegion(long regionId)
+        {
+            var obj = new object();
+            try
+            {
+                obj = await _graphClient.Cypher.Match("(r:Region)<-[p:hasRegion]-(m:Mountain)<-[k:isLocatedOn]-(mt:MountainTop)")
+                                                .Where("id(r)=$Id")
+                                                .WithParam("Id",regionId)
+                                                .With("mt{.*, Id:id(mt)} AS mountainTop")
+                                                .ReturnDistinct(mountainTop=>mountainTop.As<MountainTop>())
+                                                .ResultsAsync;
+            }
+            catch(Exception e)
+            {
+                _logger.LogError("Error returnig mountain tops! " + e.Message);
+            }
+            yield return obj;
+        }
     }
 
 }

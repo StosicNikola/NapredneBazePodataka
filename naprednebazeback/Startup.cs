@@ -46,8 +46,8 @@ namespace naprednebazeback
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); 
             });
 
-            var multiplexer = ConnectionMultiplexer.Connect("localhost");
-            services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+           /* var multiplexer = ConnectionMultiplexer.Connect("localhost");
+            services.AddSingleton<IConnectionMultiplexer>(multiplexer);*/
 
             //Logger
             ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
@@ -102,7 +102,7 @@ namespace naprednebazeback
 
             app.UseRouting();
 
-            app.UseCors();
+            app.UseCors("CORS");
 
             app.UseAuthorization();
 

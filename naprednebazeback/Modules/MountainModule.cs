@@ -22,6 +22,7 @@ namespace naprednebazeback.Modules
             _graphClient = graphClient;
             _logger = logger;
         }
+        
         public async IAsyncEnumerable<object> CreateMountain(string name, float surface)
         {
             var obj = new object();

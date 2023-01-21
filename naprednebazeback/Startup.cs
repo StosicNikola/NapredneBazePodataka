@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using Neo4jClient;
 using naprednebazeback.Hubs;
 using naprednebazeback.RedisDataLayer;
+using StackExchange.Redis;
 
 namespace naprednebazeback
 {
@@ -42,7 +43,11 @@ namespace naprednebazeback
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "naprednebazeback", Version = "v1" });
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); 
             });
+
+            var multiplexer = ConnectionMultiplexer.Connect("localhost");
+            services.AddSingleton<IConnectionMultiplexer>(multiplexer);
 
             //Logger
             ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
@@ -96,8 +101,8 @@ namespace naprednebazeback
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            
-             app.UseCors("CORS");
+
+            app.UseCors();
 
             app.UseAuthorization();
 

@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import RegionCard from '../../components/region_card/regioncard';
 import Header from '../../components/header/header';
+import TableLeaderboar from '../../components/rowLeaderboard/TableLeaderboar';
 
 
 
 function Home(){
 
     const[regions,setRegions]= useState([]);
+    const[rows,setRows] = useState(cities);
     const[hikes,setHikes]= useState([]);
 
     useEffect(()=>{
@@ -68,7 +70,50 @@ function Home(){
             return <RegionCard  regionName={element.name} regionId={element.id}/>  
         })}  
     </div>
+    <div>
+        <TableLeaderboar  />
+    </div>
+    
+
     </>)
+}
+
+const cities = [
+    {score:"10",mountain:"Trem",name:"Tamara", time: "10.1.2022"},
+    {score:"20",mountain:"Rtanj",name:"Nikola", time: "10.1.2021"},
+    {score:"30",mountain:"Sokolov kamen",name:"Tamara", time: "10.1.2020"},
+    {score:"40",mountain:"Mosor",name:"Nikola", time: "10.1.2022"}
+    
+]
+const Row = (props) => {
+    const{score,mountain,name,time} = props;
+    return (<tr>
+        <td>{score}</td>
+        <td>{mountain}</td>
+        <td>{name}</td>
+        <td>{time}</td>
+    </tr>)
+}
+const Table = (props) => {
+    const {data} = props;
+    return( <table>
+         <tr>
+            <th>Score</th>
+            <th>Mountain</th>
+            <th>Name of runner</th>
+            <th>Time</th>
+        </tr>
+        <tbody>
+            {data.map(row => 
+                <Row 
+                score = {row.score}
+                mountain = {row.mountain}
+                name ={row.name}
+                time = {row.time}
+                />
+            )}
+        </tbody>
+    </table>)
 }
 
 export default Home;

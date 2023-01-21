@@ -6,6 +6,7 @@ using System;
 using naprednebazeback.DTOs;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
+using naprednebazeback.ObjectModel;
 
 namespace naprednebazeback.RedisDataLayer
 {
@@ -27,7 +28,7 @@ namespace naprednebazeback.RedisDataLayer
 
         public RedisClient Redis {get{ return redis;} }
          public void AddRunnerToSet(MountainRunnerView mrv){
-            string blub = ConvertToBlubForMain(mrv.PersonId,mrv.Name,mrv.TimeStampRunner);
+            string blub = ConvertToBlubForMain(mrv.PersonId,mrv.Name,mrv.Mountain,mrv.TimeStampRunner);
             redis.AddItemToSortedSet(MainLeaderboardForAllPerson,blub,mrv.Score);
             string nameOfLeaderboard ;
             if (PersonOwnScoreForAllTime.TryGetValue(mrv.PersonId, out nameOfLeaderboard)){
@@ -49,7 +50,11 @@ namespace naprednebazeback.RedisDataLayer
             foreach(KeyValuePair<string,double> item in items){
               string[] subs = item.Key.Split("#");
               long id = (long)Convert.ToDouble(subs[0]);
-              mrvs.Add( new MountainRunnerView(id,subs[1],item.Value, Convert.ToDateTime(subs[2])));
+              Mountain mountain = new Mountain();
+              mountain.Id = (long)Convert.ToDouble(subs[2]);
+              mountain.name = subs[3];
+              DateTime date = DateTime.ParseExact(subs[4], "dd/MM/yyyy HH:mm:ss", null);
+              mrvs.Add( new MountainRunnerView(id,subs[1],item.Value,mountain, date));
             }
             
             return mrvs;
@@ -59,8 +64,8 @@ namespace naprednebazeback.RedisDataLayer
           return redis.GetAllItemsFromSortedSet(MainLeaderboardForAllPerson);
          }
 
-         public string ConvertToBlubForMain(long id,string name, DateTime time){
-          string blub = id + "#"+ name + "#" + time.ToString("dd/MM/yyyy HH:mm:ss");
+         public string ConvertToBlubForMain(long id,string name,Mountain mountain, DateTime time){
+          string blub = id + "#"+ name + "#" +mountain.Id+"#" + mountain.name+"#" + time.ToString("dd/MM/yyyy HH:mm:ss");
           return blub;
          }
 
@@ -90,7 +95,12 @@ namespace naprednebazeback.RedisDataLayer
             string[] subs = name.Split("#");
             List<MountainRunnerView> mrvs  = new List<MountainRunnerView>();
             foreach(KeyValuePair<string,double> item in items){
-              mrvs.Add( new MountainRunnerView(personId,subs[2],item.Value, Convert.ToDateTime(item.Key)));
+              Mountain mountain = new Mountain();
+              mountain.Id = (long)Convert.ToDouble(subs[2]);
+              mountain.name = subs[3];
+               DateTime date = DateTime.ParseExact(item.Key, "dd/MM/yyyy HH:mm:ss", null);
+             // mrvs.Add( new MountainRunnerView(personId,subs[2],item.Value,mountain, Convert.ToDateTime(item.Key)));
+             mrvs.Add( new MountainRunnerView(personId,subs[2],item.Value,mountain, date));
             }   
             return mrvs;
          }

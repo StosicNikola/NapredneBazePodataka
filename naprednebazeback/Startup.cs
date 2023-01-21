@@ -102,7 +102,7 @@ namespace naprednebazeback
 
             app.UseRouting();
 
-            app.UseCors();
+            app.UseCors("CORS");
 
             app.UseAuthorization();
 

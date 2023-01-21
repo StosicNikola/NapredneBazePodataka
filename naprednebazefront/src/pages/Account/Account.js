@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Header from "../../components/header/header";
+import { useNavigate } from "react-router-dom";
 
 function Account() {
     const [person, setPerson] = useState(undefined);
@@ -8,11 +9,17 @@ function Account() {
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [age, setAge] = useState("");
+    const navigate = useNavigate();
 
 
     const deleteAcc = () =>
     {
-        axios.delete(``)
+        axios.delete(`https://localhost:5001/Person/${person.Id}/${person.accountId}`)
+            .then(res=>res)
+            .catch(e=>alert(e))
+            localStorage.clear()
+            navigate("/")
+
     }
 
 
@@ -20,34 +27,12 @@ function Account() {
     useEffect(() => {
         if (person === undefined) {
             var id = localStorage.getItem("id")
-            if (localStorage.getItem("role") === "Mountaineer") {
-                axios.get(`https://localhost:5001/Person/mountaineer/id/${id}`)
-                    .then(res => {
-                        setPerson(res.data[0][0].person)
+            axios.get(`https://localhost:5001/Person/${id}`)
+                .then(res => {
+                    setPerson(res.data[0][0].person)
 
-                    })
-                    .catch(e => alert(e))
-            }
-
-            if (localStorage.getItem("role") === "HikingGuide") {
-                axios.get(`https://localhost:5001/Person/hikingguide/id/${id}`)
-                    .then(res => {
-                        setPerson(res.data[0][0].person)
-
-
-                    })
-                    .catch(e => alert(e))
-            }
-
-            if (localStorage.getItem("role") === "Referee") {
-                axios.get(`https://localhost:5001/Person/referee/id/${id}`)
-                    .then(res => {
-                        setPerson(res.data[0][0].person)
-
-
-                    })
-                    .catch(e => alert(e))
-            }
+                })
+                .catch(e => alert(e))
         }
     })
     return (<>

@@ -30,7 +30,7 @@ namespace naprednebazeback.Modules
     
             var obj = await _graphClient.Cypher.Match("(a:Account)<-[h:hasAccount]-(p:Person)")
                                         .Where((Account a)=> a.email == email && a.password == password)
-                                        .With("p{ .*, Id:id(p), role:h.role} AS person")
+                                        .With("p{ .*, Id:id(p), role:h.role, accountId: id(a)} AS person")
                                         .Return(( person)=>new  {
                                             person = person.As<Mountaineer>()
                                             }
@@ -57,5 +57,34 @@ namespace naprednebazeback.Modules
             else
                 return BadRequest("Error creating account");
         }
+        [HttpPost]
+        [Route("admin/{email}/{password}")]
+        public async Task<ActionResult> SignUpAdmin(string email, string password)
+        {
+                Dictionary<string, object> dictParam = new Dictionary<string, object>();
+                dictParam.Add("Email", email);
+                dictParam.Add("Password", password);
+
+               var obj =  await _graphClient.Cypher.Create("(a:Account{email:$Email, password: $Password})")
+                                            .WithParams(dictParam)
+                                            .With("a{.*, Id:id(a)}")
+                                                .Return(a=>a.As<Account>())
+                                                .ResultsAsync;
+                return Ok(obj);
+        }
+        [HttpDelete]
+        [Route("{personId}/{accountId}")]
+        public async Task<ActionResult> DeleteAccount(long personId, long accountId)
+        {
+            await _graphClient.Cypher.Match("(a:Account)<-[h:hasAccount]-(p:Person)")
+                                                .Where("id(a)=$accountId and id(p) = $id")
+                                                .WithParam("accountId",accountId)
+                                                .WithParam("id",personId)
+                                                .DetachDelete("a")
+                                                .Delete("p")
+                                                .ExecuteWithoutResultsAsync();
+            return Ok();
+        }
+
     }
 }

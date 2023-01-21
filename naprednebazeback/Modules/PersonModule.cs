@@ -20,6 +20,41 @@ namespace naprednebazeback.Modules
             _logger = logger;
             _graphClient = graphClient;
         }
+         public async IAsyncEnumerable<object>  CreateAdmin(string name, string surname,int age,long accountId)
+         {
+            var obj = new object();
+            try
+            {
+                Dictionary<string, object> dictParams = new Dictionary<string, object>();
+                dictParams.Add("Name", name);
+                dictParams.Add("Surname", surname);
+                dictParams.Add("Age",age);
+                obj = await _graphClient.Cypher.Match("(a:Account)")
+                                                .Where("id(a) =$aId")
+                                                .WithParam("aId", accountId)
+                                                .Create("(m:Person{name:$Name, surname:$Surname, age:$Age})")
+                                                .WithParams(dictParams)
+                                                .Create("(m)-[h:hasAccount{role:$Role}]->(a)")
+                                                .WithParam("Role","Admin")
+                                                .With("m{.*, Id:id(m)} AS person")
+                                                 .Return((person) => 
+                                                        new {
+                                                            id = person.As<Person>().Id,
+                                                    
+                                                            })
+                                                .ResultsAsync;
+
+
+
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(e.Message);
+            }
+            yield return obj;
+
+         }
+        
         public async IAsyncEnumerable<object>  CreateMountaineer(string name, string surname, int age, long memberCard,long accountId)
         {
             var obj = new object();
@@ -106,6 +141,25 @@ namespace naprednebazeback.Modules
             catch (Exception e)
             {
                 _logger.LogError("Error creating Hiking guide! " + e.Message);
+            }
+            yield return obj;
+        }
+        public async IAsyncEnumerable<object> ReturnPerson(long personId)
+        {
+            var obj = new object();
+            try
+            {
+                obj = await _graphClient.Cypher.Match("(p:Person)")
+                                                .Where("id(p)=$id")
+                                                .With("p{.*, Id:id(p)} AS person")
+                                                .Return(person=>new{
+                                                    person = person.As<Person>()
+                                                })
+                                                .ResultsAsync;
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(e.Message);
             }
             yield return obj;
         }

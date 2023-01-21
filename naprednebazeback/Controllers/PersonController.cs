@@ -21,6 +21,13 @@ namespace naprednebazeback.Controllers
             _module = new PersonModule(graphClient, logger);
         }
 
+        [HttpPost]
+        [Route("admin/{name}/{surname}/{age}/{accountId}")]
+        public async Task<ActionResult> CreateAdmin(string name, string surname, int age,long accountId)
+        {
+            return Ok(_module.CreateAdmin(name,surname,age,accountId));
+        }
+
 
         [HttpPost]
         [Route("mountaineer/{name}/{surname}/{age}/{memberCard}/{accountId}")]
@@ -44,6 +51,12 @@ namespace naprednebazeback.Controllers
         public async Task<ActionResult> CreateReferee(string name, string surname, int age,long accountId)
         {
             return Ok(_module.CreateReferee(name,surname,age,accountId));
+        }
+        [HttpGet]
+        [Route("{personId}")]
+        public async Task<ActionResult> ReturnPerson(long personId)
+        {
+            return Ok(_module.ReturnPerson(personId));
         }
         [HttpGet]
         [Route("referee")]

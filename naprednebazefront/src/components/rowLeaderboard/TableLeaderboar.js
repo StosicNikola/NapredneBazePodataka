@@ -6,12 +6,13 @@ import { useState } from "react";
 function TableLeaderboar() {
     const [mainLeaderboard, setMainLeaderboard] = useState([])
     
-
+    const tmp = 10;
     const returnMainleaderboardFrom0toNitems = () => {
-        axios.get(`https://localhost:5001//RedisLeaderboardControllers/GetMainleaderboardFrom0toNitems${"100"}`)
-            .then(res => {
+        axios.get(`https://localhost:5001/RedisLeaderboardControllers/GetMainleaderboardFrom0toNitems/${tmp}`)
+            .then(res => {      
                 console.log(res);
-                /*setMainLeaderboard(res.data[0])
+                /*
+                setMainLeaderboard(res.data[0])
                 setMainLeaderboard(true)*/
             })
             .catch(e => alert(e))

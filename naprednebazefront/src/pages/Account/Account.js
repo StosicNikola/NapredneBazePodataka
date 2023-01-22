@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Header from "../../components/header/header";
 import { useNavigate } from "react-router-dom";
 import "./Account.css"
+import Leaderboard from "../../components/LeaderBoardCard/LeaderBoardCard";
 
 function Account() {
     const [person, setPerson] = useState(undefined);
@@ -10,6 +11,7 @@ function Account() {
     const [name, setName] = useState(null);
     const [surname, setSurname] = useState("");
     const [age, setAge] = useState("");
+    const [personLeaderboard, setpersonLeaderboard] = useState([]);
     const navigate = useNavigate();
 
 
@@ -57,6 +59,7 @@ function Account() {
                 })
         }
 
+
         setEdit(!edit)
     }
 
@@ -70,6 +73,17 @@ function Account() {
                     setSurname(res.data[0][0].person.surname)
                     setAge(res.data[0][0].person.age)
                     console.log(res.data[0][0].person)
+                })
+                .catch(e => alert(e))
+        }
+        if (personLeaderboard.length === 0) {
+            var id = localStorage.getItem("id")
+            const tmp = 10;
+            axios.get(`https://localhost:5001/GetLeaderboardForPersonFrom0toNitems/${tmp}/${id}`)
+                .then(res => {
+                    console.log(res.data);
+                    setpersonLeaderboard(res.data)
+
                 })
                 .catch(e => alert(e))
         }
@@ -102,7 +116,10 @@ function Account() {
                 </div>
 
                 }
-
+                <div>
+                    <h3>Personal leaderboard</h3>
+                    <Leaderboard data= {personLeaderboard} />
+                </div>
 
             </div>
         </div>

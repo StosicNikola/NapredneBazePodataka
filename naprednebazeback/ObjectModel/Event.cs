@@ -11,18 +11,18 @@ namespace naprednebazeback.ObjectModel
         public virtual int difficulty { get; set; }
         public virtual string about { get; set; }
         public virtual string type { get; set; }
-        public virtual List<Mountaineer> participants { get; set; }
+        public virtual long mountainTopId {get; set;}
 
         public Event() {}
 
     }
     public class Race:Event
     {
-        public virtual Referee referee { get; set; }
+       
     }
     public class Hike:Event
     {
-        public virtual HikingGuide guide { get; set;}
+        
         
     }
 }

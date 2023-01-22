@@ -58,7 +58,7 @@ namespace naprednebazeback.Controllers
         }
 
         [HttpGet]
-        [Route("GetLeaderboardForPersonFrom0toNitems")]
+        [Route("GetLeaderboardForPersonFrom0toNitems/{numOfReturnItem}/{personId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetLeaderboardForPersonFrom0toNitems(int numOfReturnItems, long personId)

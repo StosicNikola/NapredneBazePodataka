@@ -22,7 +22,9 @@ function Uspon() {
     const [difficulty, setDifficulty] = useState();
     const [type, setType] = useState();
     const [id, setId] = useState();
-
+    const [score ,setScore] = useState(); 
+    const [registered,setRegistered] = useState(false);
+    const [moutnaintopId,setmountainTopId] =useState();
     const joinEvent = () => {
         const personId = localStorage.getItem("id");
         if (type === 'hike')
@@ -43,7 +45,22 @@ function Uspon() {
                 })
 
     }
-
+ 
+    const addScore = () => {
+        const id = localStorage.getItem("id");
+        var name = localStorage.getItem("name");
+        axios.post(`https://localhost:5001/RedisLeaderboardControllers/CreateLeaderBoardPerson`, {
+            personId: id,
+            name: name,
+            score: score,
+            mountainTop:{
+                id: moutnaintopId,
+                name: handle,
+                height: 3
+            },
+            timeStampRunner: new Date(),
+        })
+    }
 
 
 
@@ -97,10 +114,14 @@ function Uspon() {
         }
     }
     useEffect(() => {
+
+
         if (localStorage.getItem("id") !== null)
             setLoggedIn(true)
         else
             setLoggedIn(false)
+
+            
         if (info === null) {
             axios.get(`https://localhost:5001/event/${handle}`)
                 .then(res => {
@@ -109,9 +130,21 @@ function Uspon() {
                     setAbout(res.data[0][0].about)
                     setDifficulty(res.data[0][0].difficulty)
                     setType(res.data[0][0].type)
+
                     setId(res.data[0][0].id)
+                    setmountainTopId(res.data[0][0].mountainTopId)
                     console.log(res.data[0][0])
                 })
+        }
+        if(type ==="hike")
+        {
+            axios.get(`https://localhost:5001/Person/GetRegisteredPersonHike/${localStorage.getItem("id")}/${id}`)
+            .then(res=>setRegistered(res.data))
+        }
+        if(type ==="race")
+        {
+            axios.get(`https://localhost:5001/Person/GetRegisteredPersonRace/${localStorage.getItem("id")}/${id}`)
+            .then(res=>setRegistered(res.data))
         }
         if (localStorage.getItem("name") !== null) {
             setNameOfUser(localStorage.getItem("name"))
@@ -136,7 +169,14 @@ function Uspon() {
                 </div>
 
             </div>
-            {loggedIn && <button className='sign-button' onClick={joinEvent}> Join Event</button>}
+            {loggedIn ?
+               !registered?
+                <button className='sign-button' onClick={joinEvent}> Join Event</button>:
+                <div>
+                <input onChange={e=>setScore(e.target.value)}/>
+                <button onClick={addScore}>Add score</button>
+                </div>:<></>
+                }
             <div>
                 <h2>Chat for running</h2>
                 <hr className='line'></hr>

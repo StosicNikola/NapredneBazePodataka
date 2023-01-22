@@ -8,9 +8,7 @@ namespace naprednebazeback.ObjectModel
         public virtual long Id { get; set; }
         public virtual string name { get; set; }
         public virtual float surface {get; set; }
-        public virtual MountainTop highestPoint { get; set;}
-        public virtual List<MountainTop> mountainTops { get; set;}
-        public virtual Region region { get; set;}
+      
 
         public Mountain() { } 
 

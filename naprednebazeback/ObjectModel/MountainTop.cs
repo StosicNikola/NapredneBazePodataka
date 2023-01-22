@@ -8,8 +8,7 @@ namespace naprednebazeback.ObjectModel
         public virtual long Id { get; set; }
         public virtual string name { get; set;}
         public virtual int height { get; set; }
-        public virtual Mountain mountainName { get; set; }
-        public virtual List<Event> events { get; set; }  
+
         public MountainTop() {}
     }
 }

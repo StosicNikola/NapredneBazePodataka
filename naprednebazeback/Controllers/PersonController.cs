@@ -13,19 +13,19 @@ namespace naprednebazeback.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PersonController:ControllerBase
-    {   
+    public class PersonController : ControllerBase
+    {
         private static PersonModule _module;
         public PersonController(IGraphClient graphClient, ILogger<PersonController> logger)
-        {   
+        {
             _module = new PersonModule(graphClient, logger);
         }
 
         [HttpPost]
         [Route("admin/{name}/{surname}/{age}/{accountId}")]
-        public async Task<ActionResult> CreateAdmin(string name, string surname, int age,long accountId)
+        public async Task<ActionResult> CreateAdmin(string name, string surname, int age, long accountId)
         {
-            return Ok(_module.CreateAdmin(name,surname,age,accountId));
+            return Ok(_module.CreateAdmin(name, surname, age, accountId));
         }
 
 
@@ -33,24 +33,24 @@ namespace naprednebazeback.Controllers
         [Route("mountaineer/{name}/{surname}/{age}/{memberCard}/{accountId}")]
         public async Task<ActionResult> CreateMounatineer(string name, string surname, int age, long memberCard, long accountId)
         {
-           
-            return Ok( _module.CreateMountaineer(name,surname,age,memberCard,accountId));
+
+            return Ok(_module.CreateMountaineer(name, surname, age, memberCard, accountId));
         }
 
-        
+
         [HttpPost]
         [Route("hikingguide/{name}/{surname}/{age}/{licenseNumber}/{accountId}")]
-        public async Task<ActionResult> CreateHikingGuide(string name, string surname, int age, long licenseNumber,long accountId)
+        public async Task<ActionResult> CreateHikingGuide(string name, string surname, int age, long licenseNumber, long accountId)
         {
-            return Ok(_module.CreateHikingGuide(name,surname,age,licenseNumber,accountId));
+            return Ok(_module.CreateHikingGuide(name, surname, age, licenseNumber, accountId));
         }
 
-        
+
         [HttpPost]
         [Route("referee/{name}/{surname}/{age}/{accountId}")]
-        public async Task<ActionResult> CreateReferee(string name, string surname, int age,long accountId)
+        public async Task<ActionResult> CreateReferee(string name, string surname, int age, long accountId)
         {
-            return Ok(_module.CreateReferee(name,surname,age,accountId));
+            return Ok(_module.CreateReferee(name, surname, age, accountId));
         }
         [HttpGet]
         [Route("{personId}")]
@@ -68,84 +68,84 @@ namespace naprednebazeback.Controllers
         [Route("mountaineer")]
         public async Task<ActionResult> ReturnAllMountaineers()
         {
-           return Ok(_module.ReturnAllReferees());
+            return Ok(_module.ReturnAllReferees());
         }
         [HttpGet]
         [Route("hikingguide")]
         public async Task<ActionResult> ReturnAllHikingGuids()
         {
-           return Ok(_module.ReturnAllHikingGuids());
+            return Ok(_module.ReturnAllHikingGuids());
         }
-         [HttpGet]
+        [HttpGet]
         [Route("referee/name/{name}")]
         public async Task<ActionResult> ReturnRefereeByName(string name)
         {
-           return Ok(_module.ReturnRefereeByName(name));
+            return Ok(_module.ReturnRefereeByName(name));
         }
         [HttpGet]
         [Route("referee/id/{id}")]
         public async Task<ActionResult> ReturnRefereeById(long id)
         {
-           return Ok(_module.ReturnRefereeById(id));
+            return Ok(_module.ReturnRefereeById(id));
         }
         [HttpGet]
         [Route("mountaineer/name/{name}")]
         public async Task<ActionResult> ReturnMounatineerByName(string name)
         {
-           return Ok(_module.ReturnMounatineerByName(name));
+            return Ok(_module.ReturnMounatineerByName(name));
         }
         [HttpGet]
         [Route("mountaineer/id/{id}")]
         public async Task<ActionResult> ReturnMounatineerById(long id)
         {
-           return Ok(_module.ReturnMounatineerById(id));
+            return Ok(_module.ReturnMounatineerById(id));
         }
         [HttpGet]
         [Route("hikingguide/name/{name}")]
         public async Task<ActionResult> ReturnHikingGuideByName(string name)
         {
-           return Ok(_module.ReturnHikingGuideByName(name));
+            return Ok(_module.ReturnHikingGuideByName(name));
         }
         [HttpGet]
         [Route("hikingguide/id/{id}")]
         public async Task<ActionResult> ReturnHikingGuideById(long id)
         {
-           return Ok(_module.ReturnHikingGuideById(id));
+            return Ok(_module.ReturnHikingGuideById(id));
         }
         [HttpPut]
         [Route("referee")]
-        public async Task<ActionResult> UpdateReferee([FromBody]Person referee)
+        public async Task<ActionResult> UpdateReferee([FromBody] Person referee)
         {
             return Ok(_module.UpdateReferee(referee));
         }
         [HttpPut]
         [Route("mountaineer")]
-        public async Task<ActionResult> UpdateMountaineer([FromBody]Person mountaineer)
+        public async Task<ActionResult> UpdateMountaineer([FromBody] Person mountaineer)
         {
             return Ok(_module.UpdateMountaineer(mountaineer));
         }
         [HttpPut]
         [Route("hikingguide")]
-        public async Task<ActionResult> UpdateHikingGuide([FromBody]Person hikingGuide)
+        public async Task<ActionResult> UpdateHikingGuide([FromBody] Person hikingGuide)
         {
             return Ok(_module.UpdateHikingGuide(hikingGuide));
         }
         [HttpDelete]
-        [Route("referee/{id}")] 
+        [Route("referee/{id}")]
         public async Task<ActionResult> DeleteReferee(long id)
         {
             _module.DeleteReferee(id);
             return Ok();
         }
         [HttpDelete]
-        [Route("mountaineer/{id}")] 
+        [Route("mountaineer/{id}")]
         public async Task<ActionResult> DeleteMountaineer(long id)
         {
             _module.DeleteMountaineer(id);
             return Ok();
         }
         [HttpDelete]
-        [Route("hikingguide/{id}")] 
+        [Route("hikingguide/{id}")]
         public async Task<ActionResult> DeleteHikingGuide(long id)
         {
             _module.DeleteHikingGuide(id);
@@ -153,7 +153,7 @@ namespace naprednebazeback.Controllers
         }
         [HttpPost]
         [Route("hikingguide/{hikeGuideId}/hike/{hikeId}")]
-        public async Task<ActionResult> AddHike(long hikeGuideId , long hikeId)
+        public async Task<ActionResult> AddHike(long hikeGuideId, long hikeId)
         {
             _module.AddHike(hikeId, hikeGuideId);
             return Ok();
@@ -176,10 +176,51 @@ namespace naprednebazeback.Controllers
         [Route("mountaineer/{mountaineerId}/hike/{hikeId}")]
         public async Task<ActionResult> AddMountaineerClimbs(long mountaineerId, long hikeId)
         {
-            _module.AddMountaineerClimbs(hikeId,mountaineerId);
+            _module.AddMountaineerClimbs(hikeId, mountaineerId);
             return Ok();
         }
 
+        [HttpGet]
+        [Route("GetRegisteredPersonHike/{personId}/{eventId}")]
+        public async Task<ActionResult> GetRegisteredPerson(long personId, long eventId)
+        {
+            var gc = _module.GraphClient;
+            var obj = await gc.Cypher.Match("(p: Person)-[c:Climb]->(e: Event) ")
+                                      .Where("id(p)=$personId and id(e)=$eventId")
+                                      .WithParam("personId", personId)
+                                      .WithParam("eventId", eventId)
+                                      .Return(p => p.As<Person>()).ResultsAsync;
+
+
+
+
+            if (obj.Count() == 0)
+                return Ok(false);
+            else
+                return Ok(true);
+
+        }
+
+         [HttpGet]
+        [Route("GetRegisteredPersonRace/{personId}/{eventId}")]
+        public async Task<ActionResult> GetRegisteredPersonRace(long personId, long eventId)
+        {
+            var gc = _module.GraphClient;
+            var obj = await gc.Cypher.Match("(p: Person)-[c:CompetesIn]->(e: Event) ")
+                                      .Where("id(p)=$personId and id(e)=$eventId")
+                                      .WithParam("personId", personId)
+                                      .WithParam("eventId", eventId)
+                                      .Return(p => p.As<Person>()).ResultsAsync;
+
+
+
+
+            if (obj.Count() == 0)
+                return Ok(false);
+            else
+                return Ok(true);
+
+        }
 
 
 

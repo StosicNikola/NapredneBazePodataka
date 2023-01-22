@@ -15,6 +15,8 @@ namespace naprednebazeback.Modules
     {
         private static IGraphClient _graphClient;
         private static ILogger _logger;
+
+        public IGraphClient GraphClient {get { return _graphClient;}}
         public PersonModule(IGraphClient graphClient, ILogger logger)
         {
             _logger = logger;

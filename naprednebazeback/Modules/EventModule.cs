@@ -54,11 +54,12 @@ namespace naprednebazeback.Modules
                 dictParam.Add("Date", date);
                 dictParam.Add("Difficulty", difficulty);
                 dictParam.Add("About", about);
+                dictParam.Add("mtTopId", idMountainTop);
                 obj = await _graphClient.Cypher.Match("(m:MountainTop), (g:HikingGuide)")
                                                 .Where("id(m)=$mountainTopId and id(g)=$guide")
                                                 .WithParam("mountainTopId",idMountainTop)
                                                 .WithParam("guide", idHikingguide)
-                                                .Create("(h:Event:Hike{name:$Name, date:$Date, difficulty:$Difficulty, about:$About, type:'hike'})")
+                                                .Create("(h:Event:Hike{name:$Name, date:$Date, difficulty:$Difficulty, about:$About, type:'hike', mountainTopId:$mtTopId})")
                                                 .WithParams(dictParam)
                                                 .Create("(g)-[l:leads]->(h)-[i:isHikingOn]->(m)")
                                                 .With("h{.*, Id:id(h)} AS hiking")

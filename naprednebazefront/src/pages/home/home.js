@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import RegionCard from '../../components/region_card/regioncard';
 import Header from '../../components/header/header';
-import TableLeaderboar from '../../components/rowLeaderboard/TableLeaderboar';
+import Leaderboard from '../../components/LeaderBoardCard/LeaderBoardCard';
 
 
 
@@ -71,8 +71,8 @@ function Home() {
         if (mainLeaderboard.length === 0) {
             axios.get(`https://localhost:5001/RedisLeaderboardControllers/GetMainleaderboardFrom0toNitems/${tmp}`)
                 .then(res => {
-                    console.log(res.data[0]);
-                    setMainLeaderboard(res.data[0])
+                    console.log(res.data);
+                    setMainLeaderboard(res.data)
 
                 })
                 .catch(e => alert(e))
@@ -163,24 +163,8 @@ function Home() {
             </div>
             <div className='home-part'>
                 <h1>Leaderboard</h1>
-                <table>
-                    <tr>
-                        <th>Score</th>
-                        <th>Mountain</th>
-                        <th>Name of runner</th>
-                        <th>Time</th>
-                    </tr>
-                    {
-                        mainLeaderboard.map(element => {
-                            return <tr>
-                                <td>{element.score}</td>
-                                <td>{element.mountain.name}</td>
-                                <td>{element.name}</td>
-                                <td>{element.timeStampRunner}</td>
-                            </tr>
-                        })
-                    }
-                </table>
+                <Leaderboard data={mainLeaderboard} /> 
+                
             </div>
             <div className='home-part'>
                 <h1>Regions</h1>

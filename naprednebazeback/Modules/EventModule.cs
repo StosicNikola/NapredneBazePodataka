@@ -66,14 +66,13 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }
-        public async IAsyncEnumerable<object> ReturnEvent(long eventId)
+        public async IAsyncEnumerable<object> ReturnEvent(string eventName)
         {
             var obj = new object();
             try 
             {
                 obj = await _graphClient.Cypher.Match("(e:Event)")
-                                                .Where("id(e)=$Id")
-                                                .WithParam("Id", eventId)
+                                                .Where((Event e)=>e.name == eventName)
                                                 .With("e{.*, Id:id(e)} as ev")
                                                 .Return(ev=>ev.As<Event>())
                                                 .ResultsAsync;

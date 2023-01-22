@@ -73,9 +73,13 @@ function Uspon()
             setLoggedIn(true)
         else
             setLoggedIn(false)
-        if(info ===null)
+        if(info === null)
         {
-            axios.get()
+            axios.get(`https://localhost:5001/event/${handle}`)
+            .then(res=>{
+                setInfo(res.data[0][0])
+                console.log(res.data[0][0])
+            })
         }
     })
 
@@ -84,12 +88,12 @@ function Uspon()
         <h1>{handle}</h1>
         <div className='uspon'>
             <div className='uspon-info'>
-            <h2>Datum: dd.mm.yyyy.</h2>
+            <h2>Date: {info.date}</h2>
             </div>
             <div className='uspon-about'>
                 <h3>About!</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nunc justo, rhoncus et tortor non, consectetur ornare magna. Integer mattis dui a ante interdum, vitae tincidunt mauris suscipit. Pellentesque congue, elit et pretium volutpat, ante purus efficitur lorem, in lobortis tellus justo sed dolor. Phasellus eget dui a turpis maximus aliquam non quis dui. Donec id justo bibendum tortor molestie rutrum et a neque. Cras lobortis tincidunt lorem vel blandit. Donec ac rutrum nulla, sed bibendum enim. Maecenas sit amet enim magna. Mauris faucibus mollis turpis, sit amet congue erat molestie eu. Quisque pellentesque nunc tellus, a euismod urna tristique vitae. Aliquam nisl mi, ullamcorper non augue a, egestas ornare libero. Integer eget augue quis odio commodo dapibus. Nulla facilisi. Vivamus sit amet vestibulum quam. Integer ut lorem ultricies, egestas turpis sed, pellentesque dui. Aliquam malesuada ac nulla sit amet malesuada.</p></div>
-        
+                <h4>{info.about}</h4> 
+            </div>       
                 
         </div>
         <div>

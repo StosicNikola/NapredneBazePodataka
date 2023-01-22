@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-
+import Row  from "../../pages/home/home";
 
 
 function TableLeaderboar() {
@@ -8,11 +8,11 @@ function TableLeaderboar() {
     
 
     const returnMainleaderboardFrom0toNitems = () => {
-        axios.get(`https://localhost:5001//RedisLeaderboardControllers/GetMainleaderboardFrom0toNitems${"100"}`)
+        axios.get(`https://localhost:5001/RedisLeaderboardControllers/GetMainleaderboardFrom0toNitems/${"100"}`)
             .then(res => {
-                console.log(res);
-                /*setMainLeaderboard(res.data[0])
-                setMainLeaderboard(true)*/
+                console.log(res.data)
+                setMainLeaderboard(res.data)
+                setMainLeaderboard(true)
             })
             .catch(e => alert(e))
     }
@@ -34,14 +34,15 @@ function TableLeaderboar() {
             <th>Time</th>
         </tr>
         <tbody>
-            {mainLeaderboard.map(row => 
-                <Row 
+            {
+            mainLeaderboard.map(row =>{
+                return <Row 
                 score = {row.Score}
                 mountain = {row.Mountain.name}
                 name ={row.Name}
                 time = {row.TimeStampRunner}
                 />
-            )}
+})}
         </tbody>
     </table>)
 }

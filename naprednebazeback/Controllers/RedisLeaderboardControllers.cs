@@ -41,7 +41,7 @@ namespace naprednebazeback.Controllers
         }
 
         [HttpGet]
-        [Route("GetMainleaderboardFrom0toNitems")]
+        [Route("GetMainleaderboardFrom0toNitems/{numOfReturnItems}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetMainleaderboardFrom0toNitems(int numOfReturnItems)

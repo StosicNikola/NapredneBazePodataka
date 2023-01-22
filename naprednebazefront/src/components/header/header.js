@@ -5,7 +5,7 @@ import './header.css'
 import { useNavigate } from "react-router-dom";
 
 function Header() {
-    const [loggedIn, setLoggedIn] = useState()
+    const [loggedIn, setLoggedIn] = useState(false)
     const navigate = useNavigate()
 
     const loggeOut =( )=>

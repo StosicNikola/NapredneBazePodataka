@@ -22,7 +22,8 @@ function App() {
         <Route path='/Lobby' element={<Lobby/>}/>
         <Route path='/signin' element={<SignIn/>}/>
         <Route path='/signup' element={<SignUp/>}/>
-        <Route path='/uspon/:handle' element={<Uspon/>}/>
+        <Route path='/hike/:handle' element={<Uspon/>}/>
+        <Route path='/race/:handle' element={<Uspon/>}/>
         <Route path='/account' element={<Account />}/>
       </Routes>
     </BrowserRouter>

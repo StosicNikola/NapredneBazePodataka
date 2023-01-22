@@ -9,11 +9,12 @@ function RegionCard({ regionName, regionId }) {
     const [showMountains, setShowMountains] = useState(false)
     const [showMountainsTops, setShowMountainsTops] = useState(false)
 
-    const returnMountainTopInRegion = (regionid) => {
+    const returnMountainTopInRegion = () => {
         axios.get(`https://localhost:5001/MountainTop/region/${regionId}`)
             .then(res => {
                 setMountainTops(res.data[0])
-                setMountainTops(true)
+                console.log( res.data[0])
+                setShowMountainsTops(true)
             })
             .catch(e => alert(e))
     }
@@ -30,8 +31,8 @@ function RegionCard({ regionName, regionId }) {
 
     return (<><div className="region-name">
         <h5>{regionName}</h5>
-        <button onClick={returnMountainInRegion}>Mountains</button>
-        <button onClick={returnMountainTopInRegion}>Mountain Tops</button>
+        <button className="signin-button" onClick={returnMountainInRegion}>Mountains</button>
+        <button className="signin-button" onClick={returnMountainTopInRegion}>Mountain Tops</button>
         {showMountains &&
             mountains.map(element => {
                 return <div className="region-card">

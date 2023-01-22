@@ -32,11 +32,69 @@ namespace naprednebazeback.Modules
                 dictParam.Add("Date", date);
                 dictParam.Add("Difficulty", difficulty);
                 dictParam.Add("About", about);
-                obj = await _graphClient.Cypher.Create("(h:Event:Hike{ name:$Name, date:$Date, difficulty:$Difficulty, about:$About})")
+                obj = await _graphClient.Cypher.Create("(h:Event:Hike{ name:$Name, date:$Date, difficulty:$Difficulty, about:$About, type:'hike'})")
                                                 .WithParams(dictParam)
                                                 .With("h{.*, Id:id(h)} AS hiking")
                                                 .Return(hiking=>hiking.As<Hike>())
                                                 .ResultsAsync;
+            }
+            catch(Exception e)
+            {
+                _logger.LogError("Error creating hike event! " + e.Message);
+            }
+            yield return obj;
+        }
+          public async IAsyncEnumerable<object> CreateHikeEventAllData(string name, DateTime date, int difficulty, string about,long idMountainTop,long idHikingguide)
+        {
+            var obj = new object();
+            try
+            {
+                Dictionary<string,object> dictParam = new Dictionary<string, object>();
+                dictParam.Add("Name", name);
+                dictParam.Add("Date", date);
+                dictParam.Add("Difficulty", difficulty);
+                dictParam.Add("About", about);
+                obj = await _graphClient.Cypher.Match("(m:MountainTop), (g:HikingGuide)")
+                                                .Where("id(m)=$mountainTopId and id(g)=$guide")
+                                                .WithParam("mountainTopId",idMountainTop)
+                                                .WithParam("guide", idHikingguide)
+                                                .Create("(h:Event:Hike{name:$Name, date:$Date, difficulty:$Difficulty, about:$About, type:'hike'})")
+                                                .WithParams(dictParam)
+                                                .Create("(g)-[l:leads]->(h)-[i:isHikingOn]->(m)")
+                                                .With("h{.*, Id:id(h)} AS hiking")
+                                                .Return(hiking=>hiking.As<Hike>())
+                                                .ResultsAsync;
+            
+            }
+            catch(Exception e)
+            {
+                _logger.LogError("Error creating hike event! " + e.Message);
+            }
+            yield return obj;
+        }
+
+
+          public async IAsyncEnumerable<object> CreateRaceEventAllData(string name, DateTime date, int difficulty, string about,long idMountainTop,long idReferee)
+        {
+            var obj = new object();
+            try
+            {
+                Dictionary<string,object> dictParam = new Dictionary<string, object>();
+                dictParam.Add("Name", name);
+                dictParam.Add("Date", date);
+                dictParam.Add("Difficulty", difficulty);
+                dictParam.Add("About", about);
+                obj = await _graphClient.Cypher.Match("(m:MountainTop), (g:Referee)")
+                                                .Where("id(m)=$mountainTopId and id(g)=$referee")
+                                                .WithParam("mountainTopId",idMountainTop)
+                                                .WithParam("referee", idReferee)
+                                                .Create("(h:Event:Race{name:$Name, date:$Date, difficulty:$Difficulty, about:$About, type:'race'})")
+                                                .WithParams(dictParam)
+                                                .Create("(g)-[j:Judge]->(h)-[i:isHeldOn]->(m)")
+                                                .With("h{.*, Id:id(h)} AS hiking")
+                                                .Return(hiking=>hiking.As<Hike>())
+                                                .ResultsAsync;
+            
             }
             catch(Exception e)
             {
@@ -54,7 +112,7 @@ namespace naprednebazeback.Modules
                 dictParam.Add("Date", date);
                 dictParam.Add("Difficulty", difficulty);
                  dictParam.Add("About", about);
-                obj = await _graphClient.Cypher.Create("(r:Event:Race{ name:$Name, date:$Date, difficulty:$Difficulty,about:$About})")
+                obj = await _graphClient.Cypher.Create("(r:Event:Race{ name:$Name, date:$Date, difficulty:$Difficulty,about:$About,type:'race'})")
                                                 .WithParams(dictParam)
                                                 .With("r{.*, Id:id(r)} AS race")
                                                 .Return(race=>race.As<Race>())
@@ -255,6 +313,25 @@ namespace naprednebazeback.Modules
                 _logger.LogError("Error deleting race! " + e.Message);
             }
             yield return obj;
+        }
+        public async IAsyncEnumerable<object> DeleteEvent(long id)
+        {
+            var obj = new object();
+            try
+            {
+                obj = await _graphClient.Cypher.Match("(e:Event)")
+                                                .Where("id(e)=$Id")
+                                                .WithParam("Id",id)
+                                                .DetachDelete("e")
+                                                .With("e{.*, Id:id(e)} AS ev")
+                                                .Return(ev=>ev.As<Event>())
+                                                .ResultsAsync;
+            }
+            catch(Exception e)
+            {
+                _logger.LogError("Error deleting event! " + e.Message);
+            }
+             yield return obj;
         }
 
         public async IAsyncEnumerable<object> AddMountainTopForRace(long mountainTopId, long raceId)

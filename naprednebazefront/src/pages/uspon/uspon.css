@@ -7,7 +7,8 @@
 .uspon
 {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: column-reverse;
+    margin: 25px;
 
 }
 .uspon-info
@@ -15,7 +16,8 @@
     display: flex;
     align-items: center;
     flex-direction: row;
-    margin-left: 40px;
+    justify-content: center;
+    margin-top: 30px;
 
 }
 .uspon-image
@@ -24,6 +26,17 @@
 }
 .usput-about
 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 200px;
-    text-overflow:ellipsis;
+    text-align: center;
+    overflow:scroll;
+    border-bottom: solid black 1px;
+}
+.abouth3
+{
+    align-self: center;
+    text-align: center;
+    margin-top: 20px ;
 }

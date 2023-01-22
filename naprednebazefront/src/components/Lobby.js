@@ -2,7 +2,7 @@
 import { useState } from "react";
 import {Button, Form} from "react-bootstrap";
 
-const Lobby = ({joinRoom}) => {
+const Lobby = ({joinRoom, username, roomname}) => {
 
     const [user, setUser] = useState();
     const [room, setRoom] = useState();
@@ -10,13 +10,9 @@ const Lobby = ({joinRoom}) => {
     return <Form className ="lobby"
         onSubmit={e => {
             e.preventDefault();
-            joinRoom(user,room);
+            joinRoom(username,roomname);
         }}>
-        <Form.Group>
-            <Form.Control placeholder ='name' onChange={ e => setUser(e.target.value)} />
-            <Form.Control placeholder = 'room' onChange={e => setRoom(e.target.value)} />
-        </Form.Group>
-        <Button variant='success' type='submit' disabled ={!user || !room}>Join</Button>
+        <Button variant='success' type='submit' disabled ={!username || !roomname}>Join</Button>
     </Form>
 }
 

@@ -16,7 +16,7 @@ function Header() {
         
     }
     useEffect(() => {
-        if (localStorage.getItem("id") !== undefined)
+        if (localStorage.getItem("id") !== null)
             setLoggedIn(true)
         else
             setLoggedIn(false)

@@ -32,7 +32,7 @@ namespace naprednebazeback.Modules
                                         .Where((Account a)=> a.email == email && a.password == password)
                                         .With("p{ .*, Id:id(p), role:h.role, accountId: id(a)} AS person")
                                         .Return(( person)=>new  {
-                                            person = person.As<Mountaineer>()
+                                            person = person.As<Person>()
                                             }
                                         ).ResultsAsync;
                
@@ -70,7 +70,12 @@ namespace naprednebazeback.Modules
                                             .With("a{.*, Id:id(a)}")
                                                 .Return(a=>a.As<Account>())
                                                 .ResultsAsync;
+            if(obj.Count()!=0)
+            {
                 return Ok(obj);
+            }
+            else
+                return BadRequest("Error creating account");
         }
         [HttpDelete]
         [Route("{personId}/{accountId}")]

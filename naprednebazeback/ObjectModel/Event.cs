@@ -9,7 +9,8 @@ namespace naprednebazeback.ObjectModel
         public virtual string name { get; set; }
         public virtual DateTime date { get; set; }
         public virtual int difficulty { get; set; }
-        public virtual string about { get;set;}
+        public virtual string about { get; set; }
+        public virtual string type { get; set; }
         public virtual List<Mountaineer> participants { get; set; }
 
         public Event() {}

@@ -27,10 +27,22 @@ namespace naprednebazeback.Controllers
             return Ok(_module.CreateHikeEvent(name, date, difficulty,about));
         }
         [HttpPost]
+        [Route("hike/{name}/{date}/{difficulty}/{about}/{idMountainTop}/{idHikingguide}")]
+        public async Task<ActionResult> CreateHikeAllData(string name, DateTime date, int difficulty, string about,long idMountainTop,long idHikingguide)
+        {
+            return Ok(_module.CreateHikeEventAllData(name, date, difficulty,about,idMountainTop ,idHikingguide));
+        }
+        [HttpPost]
         [Route("race/{name}/{date}/{difficulty}/{about}")]
         public async Task<ActionResult> CreateRace(string name, DateTime date, int difficulty,string about)
         {
             return Ok(_module.CreateRaceEvent(name, date, difficulty,about));
+        }
+        [HttpPost]
+        [Route("race/{name}/{date}/{difficulty}/{about}/{idMountainTop}/{idReferee}")]
+        public async Task<ActionResult> CreateRaceAllData(string name, DateTime date, int difficulty, string about,long idMountainTop,long idReferee)
+        {
+            return Ok(_module.CreateRaceEventAllData(name, date, difficulty,about,idMountainTop ,idReferee));
         }
         [HttpGet]
         [Route("event/{eventName}")]
@@ -98,6 +110,12 @@ namespace naprednebazeback.Controllers
         public async Task<ActionResult> DeleteRace(long id)
         {
             return Ok(_module.DeleteRace(id));
+        }
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<ActionResult> DeleteEvent(long id)
+        {
+            return Ok(_module.DeleteEvent(id));
         }
         [HttpPost]
         [Route("hike/{hikeId}/mountaintop/{mountainTopId}")]

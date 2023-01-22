@@ -114,19 +114,19 @@ namespace naprednebazeback.Controllers
         }
         [HttpPut]
         [Route("referee")]
-        public async Task<ActionResult> UpdateReferee([FromBody]Referee referee)
+        public async Task<ActionResult> UpdateReferee([FromBody]Person referee)
         {
             return Ok(_module.UpdateReferee(referee));
         }
         [HttpPut]
         [Route("mountaineer")]
-        public async Task<ActionResult> UpdateMountaineer([FromBody]Mountaineer mountaineer)
+        public async Task<ActionResult> UpdateMountaineer([FromBody]Person mountaineer)
         {
             return Ok(_module.UpdateMountaineer(mountaineer));
         }
         [HttpPut]
         [Route("hikingguide")]
-        public async Task<ActionResult> UpdateHikingGuide([FromBody]HikingGuide hikingGuide)
+        public async Task<ActionResult> UpdateHikingGuide([FromBody]Person hikingGuide)
         {
             return Ok(_module.UpdateHikingGuide(hikingGuide));
         }

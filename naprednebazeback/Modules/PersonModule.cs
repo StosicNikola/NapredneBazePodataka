@@ -151,6 +151,7 @@ namespace naprednebazeback.Modules
             {
                 obj = await _graphClient.Cypher.Match("(p:Person)")
                                                 .Where("id(p)=$id")
+                                                .WithParam("id",personId)
                                                 .With("p{.*, Id:id(p)} AS person")
                                                 .Return(person=>new{
                                                     person = person.As<Person>()
@@ -322,7 +323,7 @@ namespace naprednebazeback.Modules
             }
             yield return obj;
         }
-        public async IAsyncEnumerable<object> UpdateReferee(Referee referee)
+        public async IAsyncEnumerable<object> UpdateReferee(Person referee)
         {
             var obj = new object();
             try
@@ -330,7 +331,7 @@ namespace naprednebazeback.Modules
                 obj = await _graphClient.Cypher.Match("(r:Referee)")
                                                 .Where("id(r)=$Id")
                                                 .WithParam("Id",referee.Id)
-                                                .Set("r:$referee")
+                                                .Set("r= $referee")
                                                 .WithParam("referee", new 
                                                 {
                                                     referee.name,
@@ -350,7 +351,7 @@ namespace naprednebazeback.Modules
             yield return obj;
         }
 
-        public async IAsyncEnumerable<object> UpdateMountaineer(Mountaineer mountaineer)
+        public async IAsyncEnumerable<object> UpdateMountaineer(Person mountaineer)
         {
             var obj = new object();
             try
@@ -358,7 +359,7 @@ namespace naprednebazeback.Modules
                 obj = await _graphClient.Cypher.Match("(m:Mountaineer)")
                                                 .Where("id(m)=$Id")
                                                 .WithParam("Id",mountaineer.Id)
-                                                .Set("m:$Mountaineer")
+                                                .Set("m = $Mountaineer")
                                                 .WithParam("Mountaineer", mountaineer)
                                                  .With("m{.*, Id:id(m)} AS mountaineer")
                                                 .Return(mountaineer => mountaineer.As<Mountaineer>())
@@ -372,7 +373,7 @@ namespace naprednebazeback.Modules
             yield return obj;
         }
 
-         public async IAsyncEnumerable<object> UpdateHikingGuide(HikingGuide hikingGuide)
+         public async IAsyncEnumerable<object> UpdateHikingGuide(Person hikingGuide)
         {
             var obj = new object();
             try
@@ -380,7 +381,7 @@ namespace naprednebazeback.Modules
                 obj = await _graphClient.Cypher.Match("(h:HikingGuide)")
                                                 .Where("id(h)=$Id")
                                                 .WithParam("Id",hikingGuide.Id)
-                                                .Set("h:$HikingGuide")
+                                                .Set("h = $HikingGuide")
                                                 .WithParam("HikingGuide", hikingGuide)
                                                 .With("h{.*, Id:id(h)} AS hiking")
                                                 .Return(hiking => hiking.As<HikingGuide>())
@@ -504,7 +505,7 @@ namespace naprednebazeback.Modules
                 await _graphClient.Cypher.Match("(h:Hike), (m:Mountaineer)")
                                             .Where("id(h)=$hikeId and id(m)=$mountaineerId")
                                             .WithParams(dictParam)
-                                            .Create("(m)-[Climb]->(h)")
+                                            .Create("(m)-[c:Climb]->(h)")
                                             .ExecuteWithoutResultsAsync();
             }
             catch(Exception e)

@@ -6,13 +6,14 @@ import Row  from "../../pages/home/home";
 function TableLeaderboar() {
     const [mainLeaderboard, setMainLeaderboard] = useState([])
     
-
+    const tmp = 10;
     const returnMainleaderboardFrom0toNitems = () => {
-        axios.get(`https://localhost:5001/RedisLeaderboardControllers/GetMainleaderboardFrom0toNitems/${"100"}`)
-            .then(res => {
-                console.log(res.data)
-                setMainLeaderboard(res.data)
-                setMainLeaderboard(true)
+        axios.get(`https://localhost:5001/RedisLeaderboardControllers/GetMainleaderboardFrom0toNitems/${tmp}`)
+            .then(res => {      
+                console.log(res);
+                /*
+                setMainLeaderboard(res.data[0])
+                setMainLeaderboard(true)*/
             })
             .catch(e => alert(e))
     }

@@ -32,13 +32,13 @@ namespace naprednebazeback.RedisDataLayer
             redis.AddItemToSortedSet(MainLeaderboardForAllPerson,blub,mrv.Score);
             string nameOfLeaderboard ;
             if (PersonOwnScoreForAllTime.TryGetValue(mrv.PersonId, out nameOfLeaderboard)){
-              string newBlub = ConvertToBlubForPeople(mrv.TimeStampRunner);
+              string newBlub = ConvertToBlubForPeople(mrv);
               redis.AddItemToSortedSet(nameOfLeaderboard,newBlub,mrv.Score);
             }
             else{
               CreateNewLeaderboardForNewPerson(mrv);
               if (PersonOwnScoreForAllTime.TryGetValue(mrv.PersonId, out nameOfLeaderboard)){
-                 string newBlub = ConvertToBlubForPeople(mrv.TimeStampRunner);
+                 string newBlub = ConvertToBlubForPeople(mrv);
                  redis.AddItemToSortedSet(nameOfLeaderboard,newBlub,mrv.Score);
               }
             }
@@ -69,9 +69,9 @@ namespace naprednebazeback.RedisDataLayer
           return blub;
          }
 
-         public string ConvertToBlubForPeople(DateTime time){
+         public string ConvertToBlubForPeople(MountainRunnerView mrv){
          // string blub = id + "#"+ name + "#" + time.ToString("dd/MM/yyyy HH:mm:ss");
-          string blub = time.ToString("dd/MM/yyyy HH:mm:ss");
+          string blub = mrv.TimeStampRunner.ToString("dd/MM/yyyy HH:mm:ss") + "#" + mrv.Mountain.Id + "#" + mrv.Mountain.name;
           return blub;
          }
 
@@ -95,10 +95,11 @@ namespace naprednebazeback.RedisDataLayer
             string[] subs = name.Split("#");
             List<MountainRunnerView> mrvs  = new List<MountainRunnerView>();
             foreach(KeyValuePair<string,double> item in items){
+              string[] s1 = item.Key.Split("#");
               Mountain mountain = new Mountain();
-              mountain.Id = (long)Convert.ToDouble(subs[2]);
-              mountain.name = subs[3];
-               DateTime date = DateTime.ParseExact(item.Key, "dd/MM/yyyy HH:mm:ss", null);
+              mountain.Id = (long)Convert.ToDouble(s1[1]);
+              mountain.name = s1[2];
+               DateTime date = DateTime.ParseExact(s1[0], "dd/MM/yyyy HH:mm:ss", null);
              // mrvs.Add( new MountainRunnerView(personId,subs[2],item.Value,mountain, Convert.ToDateTime(item.Key)));
              mrvs.Add( new MountainRunnerView(personId,subs[2],item.Value,mountain, date));
             }   
